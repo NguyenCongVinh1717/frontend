@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng điều khiển Admin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f6f8;
+            color: #2f3e46;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background-color: #e9f2f9;
+            padding: 20px 40px;
+            text-align: center;
+            border-bottom: 1px solid #cbd5e1;
+            position: relative;
+            height: 120px;
+        }
+
+        .logo-left {
+            position: absolute;
+            left: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .logo-left img {
+            height: 100px;
+        }
+
+        header h1 {
+            font-size: 28px;
+            color: #1e293b;
+            font-weight: bold;
+            margin-top: 23px;
+        }
+
+        /* ===== MAIN WRAPPER ===== */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 300px;
+            background-color: #1e293b;
+            color: #ffffff;
+            padding: 30px 20px;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 20px;
+            color: #a7c7e7;
+        }
+
+        .menu a {
+            display: block;
+            text-decoration: none;
+            color: #e2e8f0;
+            padding: 15px 15px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            font-size: 18px;
+        }
+
+        .menu a:hover {
+            background-color: #334155;
+            color: #93c5fd;
+        }
+
+        .menu a.active {
+            background-color: #93c5fd;
+            color: #1e293b;
+            font-weight: bold;
+        }
+
+        .menu i {
+            margin-right: 10px;
+        }
+
+        /* ===== CONTENT ===== */
+        .content {
+            flex: 1;
+            background-color: #f0f4f8;
+            padding: 30px;
+        }
+
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border: 1px solid #d1d5db;
+            border-left: 5px solid #60a5fa;
+            border-radius: 6px;
+            padding: 25px;
+            width: 45%;
+            height: 130px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            transform: translateY(2px);
+        }
+
+        .card h3 {
+            font-size: 18px;
+            color: #325586;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .card p {
+            font-size: 25px;
+            font-weight: bold;
+            color: #325586;
+        }
+
+        .card i {
+            font-size: 36px;
+            color: #60a5fa;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background-color: #e2e8f0;
+            text-align: center;
+            padding: 12px 0;
+            font-size: 14px;
+            color: #475569;
+            border-top: 1px solid #cbd5e1;
+        }
+
+        footer span {
+            color: #3b82f6;
+            font-weight: bold;
+        }
+
+        /* ===== MESSAGE BOX ===== */
+        .msg {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            padding: 10px 16px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            display: none;
+        }
+
+        .msg.success {
+            background-color: #16a34a;
+        }
+
+        .msg.error {
+            background-color: #dc2626;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo-left">
+            <img src="anh/Thiết kế chưa có tên.png" alt="Logo Hệ thống quản lý">
+        </div>
+        <h1>HỆ THỐNG QUẢN LÝ HỌC SINH VÀ GIÁO VIÊN TRƯỜNG TIỂU HỌC CHU MINH</h1>
+    </header>
+
+    <div class="main-wrapper">
+        <div class="sidebar">
+            <h2>BẢNG ĐIỀU KHIỂN</h2>
+            <div class="menu">
+                <a href="students.html"><i class="ri-user-3-line"></i>Quản lý học sinh</a>
+                <a href="teachers.html"><i class="ri-user-star-line"></i>Quản lý giáo viên</a>
+                <a href="subjects.html"><i class="ri-book-2-line"></i>Quản lý môn học</a>
+                <a href="assignments.html"><i class="ri-links-line"></i>Gán môn - giáo viên</a>
+                <a href="schedules.html"><i class="ri-calendar-line"></i>Thời khóa biểu</a>
+            </div>
+        </div>
+
+        <div class="content">
+            <section class="stats">
+                <div class="card">
+                    <div>
+                        <h3>Tổng số học sinh</h3>
+                        <p id="studentCount">0</p>
+                    </div>
+                    <i class="ri-user-3-line"></i>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <h3>Tổng số giáo viên</h3>
+                        <p id="teacherCount">0</p>
+                    </div>
+                    <i class="ri-user-star-line"></i>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <h3>Tổng số môn học</h3>
+                        <p id="subjectCount">0</p>
+                    </div>
+                    <i class="ri-book-2-line"></i>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <h3>Tổng số lớp học</h3>
+                        <p id="classCount">0</p>
+                    </div>
+                    <i class="ri-team-line"></i>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        © 2025 <span>Hệ thống quản lý học sinh và giáo viên</span> — Nhóm 3
+    </footer>
+
+    <div id="msgBox" class="msg"></div>
+
+    <script src="api.js"></script>
+    <script>
+        function showMsg(msg, type = "success") {
+            const box = document.getElementById("msgBox");
+            box.textContent = msg;
+            box.className = "msg " + type;
+            box.style.display = "block";
+            setTimeout(() => box.style.display = "none", 3000);
+        }
+
+        async function loadDashboard() {
+            try {
+                const data = await apiGet('/admin/countObjects');
+                document.getElementById('studentCount').textContent = data.students ?? 0;
+                document.getElementById('teacherCount').textContent = data.teachers ?? 0;
+                document.getElementById('subjectCount').textContent = data.subjects ?? 0;
+                document.getElementById('classCount').textContent = data.classes ?? 0;
+            } catch (e) {
+                console.error(e);
+                showMsg(e.message || "Không thể tải dữ liệu", "error");
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadDashboard);
+    </script>
+</body>
+
+</html>

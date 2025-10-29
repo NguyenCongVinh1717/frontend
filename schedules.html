@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quản lý Thời khóa biểu | Admin Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+    }
+
+    /* HEADER */
+    header {
+      background-color: #1e3a8a;
+      color: white;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 25px;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #fbbf24;
+      text-decoration: underline;
+    }
+
+    /* CONTAINER */
+    .container {
+      max-width: 1200px;
+      margin: 30px auto;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .container h2 {
+      text-align: center;
+      color: #1e3a8a;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+
+    /* FORM */
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    input,
+    select {
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #2563eb;
+      outline: none;
+      box-shadow: 0 0 4px rgba(96, 165, 250, 0.15);
+    }
+
+    button[type="submit"] {
+      grid-column: span 2;
+      padding: 12px 0;
+      background: linear-gradient(90deg, #2563eb, #1e40af);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button[type="submit"]:hover {
+      background: linear-gradient(90deg, #1e40af, #1e3a8a);
+    }
+
+    /* TABLE */
+    .table-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+      background: white;
+    }
+
+    th,
+    td {
+      padding: 14px 18px;
+      text-align: left;
+    }
+
+    th {
+      background: #1e3a8a;
+      color: #fff;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+
+    tr:nth-child(even) {
+      background: #f9fafb;
+    }
+
+    tr:hover {
+      background: #e6f0ff;
+      transition: 0.2s;
+    }
+
+    /* ACTION BUTTONS */
+    .btn {
+      border: none;
+      border-radius: 6px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .edit-btn {
+      background: #fbbf24;
+      color: #1f2937;
+    }
+
+    .edit-btn:hover {
+      background: #f59e0b;
+    }
+
+    .delete-btn {
+      background: #ef4444;
+      color: white;
+    }
+
+    .delete-btn:hover {
+      background: #dc2626;
+    }
+
+    /* MESSAGE BOX */
+    #msgBox {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #16a34a;
+      color: white;
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-weight: 500;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      display: none;
+      z-index: 999;
+    }
+
+    #msgBox.error {
+      background: #dc2626;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #1e3a8a;
+      color: #fff;
+      text-align: center;
+      padding: 15px 0;
+      margin-top: 30px;
+      font-size: 14px;
+    }
+
+    .filter-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 5px;
+    }
+
+    .btn-filter {
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.25s;
+    }
+
+    .btn-filter:hover {
+      background: #1e3a8a;
+      transform: translateY(-2px);
+    }
+
+
+    @media(max-width:900px) {
+      form {
+        grid-template-columns: 1fr;
+      }
+
+      button[type="submit"] {
+        grid-column: span 1;
+      }
+
+      table,
+      th,
+      td {
+        font-size: 14px;
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1><i class="fa-solid fa-calendar-days"></i> Admin Portal</h1>
+    <nav>
+      <a href="admins.html"><i class="fa fa-home"></i> Trang chủ</a>
+      <a href="students.html"><i class="fa fa-user-graduate"></i> Sinh viên</a>
+      <a href="teachers.html"><i class="fa fa-chalkboard-teacher"></i> Giáo viên</a>
+      <a href="subjects.html"><i class="fa fa-book"></i> Môn học</a>
+      <a href="assignments.html"><i class="fa fa-link"></i> Gán</a>
+      <a href="schedules.html" style="color:#fbbf24;"><i class="fa fa-calendar"></i> Thời khóa biểu</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Quản lý Thời khóa biểu</h2>
+
+    <form id="scheduleForm">
+      <input type="hidden" id="scheduleId">
+      <input id="dayOfWeek" type="number" placeholder="Ngày trong tuần (1-7)" min="1" max="7" required>
+      <input id="period" type="number" placeholder="Tiết" min="1" required>
+      <select id="classSubjectTeacherId" required>
+        <option value="">Chọn Lớp - Môn - Giáo viên</option>
+      </select>
+
+      <div class="filter-buttons">
+        <button type="button" class="btn-filter" onclick="filterByClass()">
+          <i class="fa fa-filter"></i> Lọc theo lớp
+        </button>
+        <button type="button" class="btn-filter" onclick="filterByTeacher()">
+          <i class="fa fa-chalkboard-teacher"></i> Lọc theo giáo viên
+        </button>
+      </div>
+
+      <button type="submit"><i class="fa fa-save"></i> Lưu Thời khóa biểu</button>
+
+    </form>
+    <div class="table-card">
+      <table id="schedulesTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Ngày</th>
+            <th>Tiết</th>
+            <th>Lớp - Môn - Giáo viên</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="msgBox"></div>
+
+  <footer>
+    © 2025 Hệ thống Quản lý Trường học. Designed by Admin.
+  </footer>
+
+  <!-- api.js must be included (provides apiGet/apiPost/apiPut/apiDelete) -->
+  <script src="api.js"></script>
+  <script>
+    /* schedules page: uses api.js helpers (apiGet/apiPost/apiPut/apiDelete)
+       Endpoints:
+       - GET  /admin/class-subject-teachers
+       - GET  /admin/schedules
+       - GET  /admin/schedules/{id}
+       - POST /admin/schedules
+       - PUT  /admin/schedules/{id}
+       - DELETE /admin/schedules/{id}
+    */
+
+    function showMsg(msg, type = 'success') {
+      const box = document.getElementById('msgBox');
+      box.innerText = msg;
+      box.className = type === 'error' ? 'error' : '';
+      box.style.display = 'block';
+      setTimeout(() => box.style.display = 'none', 3000);
+    }
+
+    async function loadClassSubjectTeachers() {
+      try {
+        const list = await apiGet('/admin/class-subject-teachers');
+        const sel = document.getElementById('classSubjectTeacherId');
+        sel.innerHTML = '<option value="">Chọn Lớp - Môn - Giáo viên</option>';
+        list.forEach(cst => {
+          const opt = document.createElement('option');
+          opt.value = cst.id;
+          opt.textContent = `${cst.className} - ${cst.subjectName} (${cst.teacherName})`;
+          opt.dataset.classId = cst.classId;        // 👈 thêm
+          opt.dataset.teacherId = cst.teacherId;    // 👈 thêm
+          sel.appendChild(opt);
+        });
+      } catch (e) {
+        console.error(e);
+        showMsg(e.message || 'Lỗi tải danh sách lớp-môn-giáo viên', 'error');
+      }
+    }
+
+    async function loadSchedules() {
+      try {
+        // ensure dropdown is up-to-date
+        await loadClassSubjectTeachers();
+
+        const data = await apiGet('/admin/schedules');
+        const tbody = document.querySelector('#schedulesTable tbody');
+        tbody.innerHTML = '';
+        data.forEach(s => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+        <td>${s.id}</td>
+        <td>${s.dayOfWeek}</td>
+        <td>${s.period}</td>
+        <td>${s.className || ''} - ${s.subjectName || ''} (${s.teacherName || ''})</td>
+        <td>
+          <button class="btn edit-btn" onclick="editSchedule(${s.id})"><i class="fa fa-pen"></i></button>
+          <button class="btn delete-btn" onclick="deleteSchedule(${s.id})"><i class="fa fa-trash"></i></button>
+        </td>
+      `;
+          tbody.appendChild(tr);
+        });
+      } catch (e) {
+        console.error(e);
+        showMsg(e.message || 'Lỗi tải thời khóa biểu', 'error');
+      }
+    }
+
+    document.getElementById('scheduleForm').onsubmit = async function (e) {
+      e.preventDefault();
+      const id = document.getElementById('scheduleId').value;
+      const dto = {
+        dayOfWeek: parseInt(document.getElementById('dayOfWeek').value),
+        period: parseInt(document.getElementById('period').value),
+        classSubjectTeacherId: parseInt(document.getElementById('classSubjectTeacherId').value)
+      };
+
+      try {
+        if (id) {
+          await apiPut(`/admin/schedules/${id}`, dto);
+          showMsg('Cập nhật thời khóa biểu thành công');
+        } else {
+          await apiPost('/admin/schedules', dto);
+          showMsg('Tạo thời khóa biểu thành công');
+        }
+        document.getElementById('scheduleForm').reset();
+        document.getElementById('scheduleId').value = '';
+        loadSchedules();
+      } catch (e) {
+        console.error(e);
+        // api.js throws Error with message extracted from backend (if available)
+        showMsg(e.message || 'Lỗi khi lưu thời khóa biểu', 'error');
+      }
+    };
+
+    async function editSchedule(id) {
+      try {
+        const s = await apiGet(`/admin/schedules/${id}`);
+        document.getElementById('scheduleId').value = s.id;
+        document.getElementById('dayOfWeek').value = s.dayOfWeek ?? '';
+        document.getElementById('period').value = s.period ?? '';
+        document.getElementById('classSubjectTeacherId').value = s.classSubjectTeacherId ?? '';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (e) {
+        console.error(e);
+        showMsg(e.message || 'Lỗi tải lịch', 'error');
+      }
+    }
+
+    async function deleteSchedule(id) {
+      if (!confirm('Xóa lịch học này?')) return;
+      try {
+        await apiDelete(`/admin/schedules/${id}`);
+        showMsg('Đã xóa lịch học');
+        loadSchedules();
+      } catch (e) {
+        console.error(e);
+        showMsg(e.message || 'Lỗi khi xóa', 'error');
+      }
+    }
+
+    async function filterByClass() {
+      const sel = document.getElementById("classSubjectTeacherId");
+      const opt = sel.selectedOptions[0];
+      if (!opt || !opt.dataset.classId) return alert("Vui lòng chọn lớp!");
+      const classId = opt.dataset.classId;
+
+      try {
+        const list = await apiGet(`/admin/schedulesByClass/${classId}`);
+        const tbody = document.querySelector("#schedulesTable tbody");
+        tbody.innerHTML = list.map(s => `
+      <tr>
+        <td>${s.id}</td>
+        <td>${s.dayOfWeek}</td>
+        <td>${s.period}</td>
+        <td>${s.className} - ${s.subjectName} (${s.teacherName})</td>
+        <td>
+          <button class="btn edit-btn" onclick="editSchedule(${s.id})"><i class="fa fa-pen"></i></button>
+          <button class="btn delete-btn" onclick="deleteSchedule(${s.id})"><i class="fa fa-trash"></i></button>
+        </td>
+      </tr>
+    `).join('');
+      } catch (e) {
+        console.error(e);
+        showMsg(e.message || 'Lỗi lọc theo lớp', 'error');
+      }
+    }
+
+    async function filterByTeacher() {
+      const sel = document.getElementById("classSubjectTeacherId");
+      const opt = sel.selectedOptions[0];
+      if (!opt || !opt.dataset.teacherId) return alert("Vui lòng chọn giáo viên!");
+      const teacherId = opt.dataset.teacherId;
+
+      try {
+        const list = await apiGet(`/admin/schedulesByTeacher/${teacherId}`);
+        const tbody = document.querySelector("#schedulesTable tbody");
+        tbody.innerHTML = list.map(s => `
+      <tr>
+        <td>${s.id}</td>
+        <td>${s.dayOfWeek}</td>
+        <td>${s.period}</td>
+        <td>${s.className} - ${s.subjectName} (${s.teacherName})</td>
+        <td>
+          <button class="btn edit-btn" onclick="editSchedule(${s.id})"><i class="fa fa-pen"></i></button>
+          <button class="btn delete-btn" onclick="deleteSchedule(${s.id})"><i class="fa fa-trash"></i></button>
+        </td>
+      </tr>
+    `).join('');
+      } catch (e) {
+        console.error(e);
+        showMsg(e.message || 'Lỗi lọc theo giáo viên', 'error');
+      }
+    }
+
+
+
+    // initial load
+    window.onload = loadSchedules;
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý Môn học | Admin Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+    }
+
+    /* HEADER */
+    header {
+      background-color: #1e3a8a;
+      color: white;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 25px;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+    nav a:hover {
+      text-decoration: underline;
+      color: #fbbf24;
+    }
+
+    /* CONTAINER */
+    .container {
+      max-width: 1200px;
+      margin: 30px auto;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+    .container h2 {
+      text-align: center;
+      color: #1e3a8a;
+      margin-bottom: 30px;
+      font-size: 24px;
+    }
+
+    /* FORM */
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    input, select {
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+      transition: border 0.3s;
+    }
+    input:focus, select:focus {
+      border-color: #2563eb;
+      outline: none;
+    }
+    button[type="submit"] {
+      grid-column: span 2;
+      padding: 12px 0;
+      background: linear-gradient(90deg,#2563eb,#1e40af);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button[type="submit"]:hover {
+      background: linear-gradient(90deg,#1e40af,#1e3a8a);
+    }
+
+    /* TABLE */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+    th {
+      background: #1e3a8a;
+      color: white;
+      text-transform: uppercase;
+      font-size: 13px;
+      padding: 12px;
+    }
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+    }
+    tr:hover { background: #f9fafb; }
+
+    /* ACTION BUTTONS */
+    .btn {
+      border: none;
+      border-radius: 6px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: 0.3s;
+    }
+    .edit-btn { background: #fbbf24; color: #1f2937; }
+    .edit-btn:hover { background: #f59e0b; }
+    .delete-btn { background: #ef4444; color: white; }
+    .delete-btn:hover { background: #dc2626; }
+
+    /* MESSAGE BOX */
+    #msgBox {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #16a34a;
+      color: white;
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-weight: 500;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 999;
+    }
+    #msgBox.error { background: #dc2626; }
+
+    /* FOOTER */
+    footer {
+      background: #1e3a8a;
+      color: #fff;
+      text-align: center;
+      padding: 15px 0;
+      margin-top: 30px;
+      font-size: 14px;
+    }
+
+    @media(max-width:900px){
+      form { grid-template-columns: 1fr; }
+      button[type="submit"] { grid-column: span 1; }
+      table, th, td { font-size: 14px; padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1><i class="fa-solid fa-book"></i> Admin Portal</h1>
+  <nav>
+    <a href="admins.html"><i class="fa fa-home"></i> Trang chủ</a>
+    <a href="students.html"><i class="fa fa-user-graduate"></i> Sinh viên</a>
+    <a href="teachers.html"><i class="fa fa-chalkboard-teacher"></i> Giáo viên</a>
+    <a href="subjects.html" style="color:#fbbf24;"><i class="fa fa-book"></i> Môn học</a>
+    <a href="assignments.html"><i class="fa fa-link"></i> Gán</a>
+    <a href="schedules.html"><i class="fa fa-calendar"></i> Thời khóa biểu</a>
+  </nav>
+</header>
+
+<div class="container">
+  <h2>Quản lý Môn học</h2>
+
+  <form id="subjectForm">
+    <input type="hidden" id="subjectId">
+    <input placeholder="Mã môn" id="code" required>
+    <input placeholder="Tên môn" id="name" required>
+    <input type="number" placeholder="Số tín chỉ" id="credit">
+    <select id="gradeSelect">
+      <option value="">Chọn khối</option>
+    </select>
+    <button type="submit"><i class="fa fa-save"></i> Lưu môn học</button>
+  </form>
+
+  <!-- LỌC MÔN HỌC THEO KHỐI -->
+<div style="margin-bottom:20px; display:flex; align-items:center; gap:10px;">
+  <label for="filterGrade" style="font-weight:600;">Lọc theo khối:</label>
+  <select id="filterGrade" style="padding:10px; border-radius:8px; border:1px solid #d1d5db; min-width:200px;">
+    <option value="">-- Tất cả --</option>
+  </select>
+  <button class="btn" style="background:#2563eb; color:white;" onclick="filterByGrade()">
+    <i class="fa fa-filter"></i> Lọc
+  </button>
+  <button class="btn" style="background:#2563eb; color:white;" onclick="loadSubjects()">
+    <i class="fa fa-rotate"></i> Tải lại
+  </button>
+</div>
+
+
+  <table id="subjectsTable">
+    <thead>
+      <tr>
+        <th>Mã</th>
+        <th>Tên môn</th>
+        <th>Tín chỉ</th>
+        <th>Khối</th>
+        <th>Hành động</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<div id="msgBox"></div>
+
+<footer>
+  © 2025 Hệ thống Quản lý Trường học. Designed by Admin.
+</footer>
+
+<script src="api.js"></script>
+<script>
+function showMsg(msg, type='success'){
+  const box = document.getElementById('msgBox');
+  box.innerText = msg;
+  box.className = type==='error' ? 'error' : '';
+  box.style.display = 'block';
+  setTimeout(() => box.style.display = 'none', 3000);
+}
+
+async function loadGrades(){
+  try{
+    const data = await apiGet('/admin/grades');
+    const sel = document.getElementById('gradeSelect');
+    sel.innerHTML = '<option value="">Chọn khối</option>';
+    data.forEach(g => {
+      const opt = document.createElement('option');
+      opt.value = g.id;
+      opt.textContent = g.name;
+      sel.appendChild(opt);
+    });
+  }catch(e){
+    showMsg(e.message || 'Lỗi tải khối', 'error');
+  }
+}
+
+async function loadSubjects(){
+  try{
+    const data = await apiGet('/admin/subjects');
+    const tbody = document.querySelector('#subjectsTable tbody');
+    tbody.innerHTML = '';
+    data.forEach(s => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${s.code}</td>
+          <td>${s.name}</td>
+          <td>${s.credit ?? ''}</td>
+          <td>${s.gradeName ?? ''}</td>
+          <td>
+            <button class="btn edit-btn" onclick="editSubject(${s.id})"><i class="fa fa-pen"></i></button>
+            <button class="btn delete-btn" onclick="deleteSubject(${s.id})"><i class="fa fa-trash"></i></button>
+          </td>
+        </tr>
+      `;
+    });
+  }catch(e){
+    showMsg(e.message || 'Lỗi tải môn học', 'error');
+  }
+}
+
+document.getElementById('subjectForm').onsubmit = async e => {
+  e.preventDefault();
+  const id = document.getElementById('subjectId').value;
+  const dto = {
+    code: document.getElementById('code').value,
+    name: document.getElementById('name').value,
+    credit: parseInt(document.getElementById('credit').value) || null,
+    gradeId: document.getElementById('gradeSelect').value ? parseInt(document.getElementById('gradeSelect').value) : null
+  };
+  try{
+    if (id) {
+      await apiPut(`/admin/subjects/${id}`, dto);
+      showMsg('Cập nhật môn học thành công');
+    } else {
+      await apiPost('/admin/subjects', dto);
+      showMsg('Tạo môn học thành công');
+    }
+    document.getElementById('subjectForm').reset();
+    document.getElementById('subjectId').value = '';
+    loadSubjects();
+  }catch(e){
+    showMsg(e.message || 'Lỗi lưu môn học', 'error');
+  }
+};
+
+async function editSubject(id){
+  try{
+    const s = await apiGet(`/admin/subjects/${id}`);
+    document.getElementById('subjectId').value = s.id;
+    document.getElementById('code').value = s.code || '';
+    document.getElementById('name').value = s.name || '';
+    document.getElementById('credit').value = s.credit ?? '';
+    document.getElementById('gradeSelect').value = s.gradeId ?? '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }catch(e){
+    showMsg(e.message || 'Lỗi tải môn học', 'error');
+  }
+}
+
+async function deleteSubject(id){
+  if(!confirm('Xóa môn học này?')) return;
+  try{
+    await apiDelete(`/admin/subjects/${id}`);
+    showMsg('Đã xóa môn học');
+    loadSubjects();
+  }catch(e){
+    showMsg(e.message || 'Lỗi xóa môn học', 'error');
+  }
+}
+
+// === LOAD KHỐI CHO LỌC ===
+async function loadFilterGrades() {
+  try {
+    const data = await apiGet('/admin/grades');
+    const filter = document.getElementById('filterGrade');
+    data.forEach(g => filter.innerHTML += `<option value="${g.id}">${g.name}</option>`);
+  } catch(e) {
+    showMsg(e.message,'error');
+  }
+}
+
+// === LỌC MÔN HỌC THEO KHỐI ===
+async function filterByGrade() {
+  const gradeId = document.getElementById('filterGrade').value;
+  if(!gradeId){
+    loadSubjects();
+    return;
+  }
+  try {
+    const data = await apiGet('/admin/subjectsByGrade/' + gradeId);
+    const tbody = document.querySelector('#subjectsTable tbody');
+    tbody.innerHTML = '';
+    data.forEach(s => {
+      tbody.innerHTML += `
+      <tr>
+        <td>${s.code}</td>
+        <td>${s.name}</td>
+        <td>${s.gradeName || ''}</td>
+        <td>
+          <button class="btn edit-btn" onclick="editSubject(${s.id})"><i class="fa fa-pen"></i></button>
+          <button class="btn delete-btn" onclick="deleteSubject(${s.id})"><i class="fa fa-trash"></i></button>
+        </td>
+      </tr>`;
+    });
+    showMsg(`Đã lọc ${data.length} môn học`);
+  } catch(e) {
+    showMsg(e.message,'error');
+  }
+}
+
+
+window.onload = () => {
+  loadGrades();    
+  loadSubjects();
+  loadFilterGrades(); 
+};
+
+</script>
+
+</body>
+</html>

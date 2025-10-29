@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <title>Login - Student Management</title>
+    <style>
+/* Login - Optimized for Clarity, Wide, and Compact (Sử dụng CSS cơ bản) */
+
+/* Thiết lập màu cơ bản (Sử dụng tên màu HTML và RGB/HSL đơn giản) */
+
+/* Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    /* Dùng font mặc định của hệ thống */
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: whitesmoke; /* Nền trang rất nhẹ */
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: black; /* Văn bản đậm */
+}
+
+.container {
+    width: 100%;
+    max-width: 520px; /* Kích thước tối đa RỘNG HƠN */
+    background: white; /* Nền trắng tinh khiết */
+    padding: 35px 45px; /* Padding dọc GIẢM (NGẮN HƠN) */
+    border-radius: 10px; /* Dùng giá trị cố định thay vì biến */
+    /* Bỏ box-shadow phức tạp, dùng border đơn giản */
+    border: 2px solid lightgray;
+    text-align: center;
+    /* Bỏ transition */
+}
+
+/* --- LOGO SECTION --- */
+.logo-container {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    /* Dùng border đơn giản */
+    border-bottom: 5px solid lightgray;
+}
+.logo-container img {
+    max-width: 220px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 2.2rem;
+    font-weight: bold; /* Tương đương 700 */
+    /* LOẠI BỎ margin-bottom: -20px; để không đè lên phần tử bên dưới */
+    margin-bottom: 10px; /* Thêm margin dương để tạo khoảng cách */
+    color: rgba(0, 0, 34, 0.953); /* Đã chỉnh lại màu xanh đậm */
+    letter-spacing: 0.5px;
+}
+
+.msg {
+    margin-bottom: 25px; /* Giữ nguyên khoảng cách dưới */
+    font-size: 1rem;
+    color: red; /* Đỏ lỗi */
+    min-height: 24px; /* Giữ min-height để dành chỗ ngay cả khi không có lỗi */
+    font-weight: bold;
+    /* KHÔNG CẦN CHỈNH SỬA VÌ H1 ĐÃ BỎ margin âm */
+}
+
+form label {
+    display: block;
+    text-align: left;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    color: black;
+    font-weight: bold;
+}
+
+form input {
+    width: 100%;
+    padding: 14px 18px;
+    margin-top: 8px;
+    border: 1px solid gray;
+    border-radius: 10px;
+    outline: none;
+    font-size: 1.05rem;
+    color: black;
+    background-color: white;
+}
+
+form input:focus {
+    border-color: orange;
+    outline: 2px solid rgba(243, 177, 60, 0.5);
+    background-color: white;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 30px;
+    background: rgba(0, 0, 34, 0.953); /* Đã chỉnh lại màu xanh đậm */
+    border: none;
+    border-radius: 10px;
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: navy;
+}
+
+button:active {
+    background: blue;
+}
+
+small {
+    display: block;
+    margin-top: 30px;
+    font-size: 0.9rem;
+    color: gray;
+}
+    </style>
+</head>
+<body>
+    <main class="container">
+        <div class="logo-container">
+            <img src="anh/Thiết kế chưa có tên.png" alt="Logo Hệ thống quản lý">
+        </div>
+        
+        <h1>ĐĂNG NHẬP</h1>
+        <div id="msg" class="msg"></div>
+        <form id="loginForm">
+            <label>Tên đăng nhập
+                <input id="username" required />
+            </label>
+            <label>Mật khẩu
+                <input id="password" type="password" required />
+            </label>
+            <button type="submit">ĐĂNG NHẬP</button>
+        </form>
+        <small>Liên hệ quản trị viên nếu bạn gặp sự cố.</small>
+    </main>
+
+    <script src="api.js"></script>
+    <script>
+        const form = document.getElementById('loginForm');
+        const msg = document.getElementById('msg');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            msg.textContent = '';
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            try {
+                const data = await apiPost('/auth/login', { username, password }, false);
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('role', data.role);
+                if (data.studentId) localStorage.setItem('studentId', data.studentId);
+                if (data.teacherId) localStorage.setItem('teacherId', data.teacherId);
+                const role = data.role?.toUpperCase?.() || '';
+                if (role.includes('ADMIN')) window.location.href = 'admins.html';
+                else if (role.includes('TEACHER')) window.location.href = 'teacher.html';
+                else if (role.includes('STUDENT')) window.location.href = 'student.html';
+                else msg.textContent = 'Invalid role: ' + data.role;
+            } catch (err) {
+                console.error(err);
+                msg.textContent = 'Login failed: ' + (err.message || err);
+            }
+        });
+    </script>
+</body>
+</html>

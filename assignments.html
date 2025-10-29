@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gán Môn học - Giáo viên cho Lớp | Admin Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+        }
+
+        /* HEADER */
+        header {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+            color: #fbbf24;
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .container h2 {
+            text-align: center;
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        /* FORM */
+        form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        select {
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            font-size: 14px;
+            transition: border 0.3s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        select:focus {
+            border-color: #2563eb;
+            outline: none;
+        }
+
+        button[type="submit"] {
+            grid-column: span 2;
+            padding: 12px 0;
+            background: linear-gradient(90deg, #2563eb, #1e40af);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background: linear-gradient(90deg, #1e40af, #1e3a8a);
+        }
+
+        /* TABLE */
+        .table-card {
+            margin-top: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+            background: white;
+        }
+
+        th,
+        td {
+            padding: 14px 18px;
+            text-align: left;
+        }
+
+        th {
+            background: #1e3a8a;
+            color: white;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        tr:hover {
+            background: #e6f0ff;
+            transition: 0.2s;
+        }
+
+        /* ACTION BUTTONS */
+        .btn {
+            border: none;
+            border-radius: 6px;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+
+        .edit-btn {
+            background: #facc15;
+            color: #1f2937;
+        }
+
+        .edit-btn:hover {
+            background: #eab308;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .delete-btn:hover {
+            background: #dc2626;
+        }
+
+        /* MESSAGE BOX */
+        #msgBox {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-weight: 500;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 999;
+            color: #fff;
+        }
+
+        #msgBox.success {
+            background: #16a34a;
+        }
+
+        #msgBox.error {
+            background: #dc2626;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #1e3a8a;
+            color: #fff;
+            text-align: center;
+            padding: 15px 0;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+
+        @media(max-width:900px) {
+            form {
+                grid-template-columns: 1fr;
+            }
+
+            button[type="submit"] {
+                grid-column: span 1;
+            }
+
+            table,
+            th,
+            td {
+                font-size: 14px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1><i class="fa-solid fa-link"></i> Admin Portal</h1>
+        <nav>
+            <a href="admins.html"><i class="fa fa-home"></i> Trang chủ</a>
+            <a href="students.html"><i class="fa fa-user-graduate"></i> Sinh viên</a>
+            <a href="teachers.html"><i class="fa fa-chalkboard-teacher"></i> Giáo viên</a>
+            <a href="subjects.html"><i class="fa fa-book"></i> Môn học</a>
+            <a href="assignments.html" style="color:#fbbf24;"><i class="fa fa-link"></i> Gán</a>
+            <a href="schedules.html"><i class="fa fa-calendar"></i> Thời khóa biểu</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>Gán Môn học - Giáo viên cho Lớp</h2>
+
+        <form id="assignForm">
+            <div style="flex:1; min-width:200px; display:flex; align-items:center; gap:10px;">
+                <select id="classSelect" required
+                    style="flex:1; padding:12px; border-radius:10px; border:1px solid #d1d5db;">
+                    <option value="">Chọn Lớp</option>
+                </select>
+                <button type="button" class="btn" style="background:#2563eb; color:white; padding:12px 15px;"
+                    onclick="filterSubjectsByClass()">
+                    <i class="fa fa-filter"></i> Lọc môn
+                </button>
+            </div>
+            <select id="subjectSelect" required>
+                <option value="">Chọn Môn học</option>
+            </select>
+
+            <div style="display:flex; min-width:250px;align-items:center; gap:10px;">
+                <select id="teacherSelect" required style="flex:1;">
+                    <option value="">Chọn Giáo viên</option>
+                </select>
+                <button type="button" class="btn" style="background:#2563eb; color:white; padding:12px 15px;"
+                    onclick="filterAssignmentsByTeacher()">
+                    <i class="fa fa-filter"></i> Lọc GV
+                </button>
+            </div>
+
+
+            <button type="submit" style="width: 300px; margin-left: 100px;"><i class="fa fa-save"></i> Lưu phân công</button>
+        </form>
+
+        <div class="table-card">
+            <table id="assignmentsTable">
+                <thead>
+                    <tr>
+                        <th>Lớp</th>
+                        <th>Môn học</th>
+                        <th>Giáo viên</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="msgBox"></div>
+
+    <footer>
+        © 2025 Hệ thống Quản lý Trường học. Designed by Admin.
+    </footer>
+
+    <!-- api.js should be in same folder; it provides apiGet/apiPost/apiPut/apiDelete -->
+    <script src="api.js"></script>
+    <script>
+        /*
+          assignments.html
+          - giao diện giống teachers.html
+          - sử dụng api.js (apiGet/apiPost/apiPut/apiDelete)
+          - create: POST /api/admin/class-subject-teachers?classId=...&subjectId=...&teacherId=...
+          - update (change teacher): PUT /api/admin/classes/{classId}/subjects/{subjectId}/teachers/{teacherId}
+          - delete: DELETE /api/admin/class-subject-teachers?classId=...&subjectId=...&teacherId=...
+        */
+
+        const msgBox = document.getElementById('msgBox');
+        let editMode = null; // { classId, subjectId } when editing (change teacher)
+
+        function showMsg(text, type = 'success') {
+            msgBox.textContent = text;
+            msgBox.className = type === 'error' ? 'error' : 'success';
+            msgBox.style.display = 'block';
+            setTimeout(() => msgBox.style.display = 'none', 3000);
+        }
+
+        async function loadOptions() {
+            try {
+                const [classes, subjects, teachers] = await Promise.all([
+                    apiGet('/admin/classes'),
+                    apiGet('/admin/subjects'),
+                    apiGet('/admin/teachers')
+                ]);
+
+                // fill classes
+                const classSel = document.getElementById('classSelect');
+                classSel.innerHTML = '<option value="">Chọn Lớp</option>';
+                classes.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c.id;
+                    opt.textContent = c.name;
+                    // keep gradeId for filtering subjects
+                    if (c.gradeId !== undefined) opt.dataset.grade = c.gradeId;
+                    classSel.appendChild(opt);
+                });
+
+                // keep subjects in memory (we'll use apiGet later when filtering)
+                window.__subjectsCache = subjects || [];
+
+                // fill teachers
+                const teacherSel = document.getElementById('teacherSelect');
+                teacherSel.innerHTML = '<option value="">Chọn Giáo viên</option>';
+                teachers.forEach(t => {
+                    const opt = document.createElement('option');
+                    opt.value = t.id;
+                    opt.textContent = t.fullName;
+                    teacherSel.appendChild(opt);
+                });
+
+            } catch (err) {
+                console.error(err);
+                showMsg(err.message || 'Lỗi tải dữ liệu', 'error');
+            }
+        }
+
+        // filter subjects when class changed
+        document.getElementById('classSelect').addEventListener('change', () => {
+            const classSel = document.getElementById('classSelect');
+            const selected = classSel.selectedOptions[0];
+            const gradeId = selected && selected.dataset && selected.dataset.grade ? parseInt(selected.dataset.grade) : null;
+            const subjectSel = document.getElementById('subjectSelect');
+            subjectSel.innerHTML = '<option value="">Chọn Môn học</option>';
+            if (!gradeId) return;
+            (window.__subjectsCache || []).filter(s => s.gradeId === gradeId).forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.textContent = s.name;
+                subjectSel.appendChild(opt);
+            });
+        });
+
+        // load assignments list
+        async function loadAssignments() {
+            try {
+                const data = await apiGet('/admin/class-subject-teachers');
+                const tbody = document.querySelector('#assignmentsTable tbody');
+                tbody.innerHTML = '';
+                data.forEach(a => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+        <td>${a.className || ''}</td>
+        <td>${a.subjectName || ''}</td>
+        <td>${a.teacherName || ''}</td>
+        <td>
+          <button class="btn edit-btn" onclick="startEdit(${a.classId}, ${a.subjectId}, ${a.teacherId})"><i class="fa fa-pen"></i></button>
+          <button class="btn delete-btn" onclick="unassign(${a.classId}, ${a.subjectId}, ${a.teacherId})"><i class="fa fa-trash"></i></button>
+        </td>
+      `;
+                    tbody.appendChild(tr);
+                });
+            } catch (err) {
+                console.error(err);
+                showMsg(err.message || 'Lỗi tải phân công', 'error');
+            }
+        }
+
+        // submit assign / update
+        document.getElementById('assignForm').onsubmit = async function (e) {
+            e.preventDefault();
+            const classId = parseInt(document.getElementById('classSelect').value);
+            const subjectId = parseInt(document.getElementById('subjectSelect').value);
+            const teacherId = parseInt(document.getElementById('teacherSelect').value);
+
+            if (!classId || !subjectId || !teacherId) { showMsg('Vui lòng chọn đủ Lớp / Môn / Giáo viên', 'error'); return; }
+
+            try {
+                if (editMode) {
+                    // update: change teacher for existing class+subject
+                    await apiPut(`/admin/classes/${editMode.classId}/subjects/${editMode.subjectId}/teachers/${teacherId}`, null);
+                    showMsg('Cập nhật phân công thành công');
+                    editMode = null;
+                } else {
+                    // create assign
+                    await apiPost(`/admin/class-subject-teachers?classId=${classId}&subjectId=${subjectId}&teacherId=${teacherId}`, null);
+                    showMsg('Phân công thành công');
+                }
+                // reset form and reload list
+                document.getElementById('assignForm').reset();
+                // clear subject select because it will be repopulated when class changed
+                document.getElementById('subjectSelect').innerHTML = '<option value="">Chọn Môn học</option>';
+                loadAssignments();
+            } catch (err) {
+                console.error(err);
+                // try extract backend message
+                const msg = (err && err.message) ? err.message : 'Lỗi khi lưu phân công';
+                showMsg(msg, 'error');
+            }
+        };
+
+        // edit start
+        function startEdit(classId, subjectId, teacherId) {
+            editMode = { classId, subjectId };
+            // set class select (this will trigger filtering subjects)
+            document.getElementById('classSelect').value = classId;
+            // trigger change to populate subjects
+            const ev = new Event('change', { bubbles: true });
+            document.getElementById('classSelect').dispatchEvent(ev);
+            // set subject and teacher selects
+            document.getElementById('subjectSelect').value = subjectId;
+            document.getElementById('teacherSelect').value = teacherId;
+            // scroll to form
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // unassign (delete)
+        async function unassign(classId, subjectId, teacherId) {
+            if (!confirm('Xóa phân công này?')) return;
+            try {
+                await apiDelete(`/admin/class-subject-teachers?classId=${classId}&subjectId=${subjectId}&teacherId=${teacherId}`);
+                showMsg('Đã xóa phân công');
+                loadAssignments();
+            } catch (err) {
+                console.error(err);
+                showMsg(err.message || 'Lỗi khi xóa phân công', 'error');
+            }
+        }
+
+        async function filterSubjectsByClass() {
+            const classId = parseInt(document.getElementById('classSelect').value);
+            if (!classId) {
+                loadAssignments(); // hiển thị tất cả
+                return;
+            }
+
+            try {
+                const subjects = await apiGet(`/admin/subjectsByClass/${classId}`);
+                const subjectIds = subjects.map(s => s.id);
+                const data = await apiGet('/admin/class-subject-teachers');
+                const tbody = document.querySelector('#assignmentsTable tbody');
+                tbody.innerHTML = '';
+                data
+                    .filter(a => a.classId === classId && subjectIds.includes(a.subjectId))
+                    .forEach(a => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+          <td>${a.className || ''}</td>
+          <td>${a.subjectName || ''}</td>
+          <td>${a.teacherName || ''}</td>
+          <td>
+            <button class="btn edit-btn" onclick="startEdit(${a.classId}, ${a.subjectId}, ${a.teacherId})"><i class="fa fa-pen"></i></button>
+            <button class="btn delete-btn" onclick="unassign(${a.classId}, ${a.subjectId}, ${a.teacherId})"><i class="fa fa-trash"></i></button>
+          </td>`;
+                        tbody.appendChild(tr);
+                    });
+                showMsg(`Đã lọc ${subjectIds.length} môn của lớp`, 'success');
+            } catch (err) {
+                console.error(err);
+                showMsg(err.message || 'Lỗi khi lọc phân công', 'error');
+            }
+        }
+
+
+
+        async function filterAssignmentsByTeacher() {
+            const teacherId = parseInt(document.getElementById('teacherSelect').value);
+            if (!teacherId) {
+                loadAssignments(); // nếu chưa chọn thì hiển thị lại tất cả
+                return;
+            }
+
+            try {
+                const data = await apiGet('/admin/class-subject-teachers');
+                const filtered = data.filter(a => a.teacherId === teacherId);
+
+                const tbody = document.querySelector('#assignmentsTable tbody');
+                tbody.innerHTML = '';
+                if (filtered.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">Giáo viên này chưa được gán môn nào</td></tr>`;
+                } else {
+                    filtered.forEach(a => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+          <td>${a.className || ''}</td>
+          <td>${a.subjectName || ''}</td>
+          <td>${a.teacherName || ''}</td>
+          <td>
+            <button class="btn edit-btn" onclick="startEdit(${a.classId}, ${a.subjectId}, ${a.teacherId})"><i class="fa fa-pen"></i></button>
+            <button class="btn delete-btn" onclick="unassign(${a.classId}, ${a.subjectId}, ${a.teacherId})"><i class="fa fa-trash"></i></button>
+          </td>`;
+                        tbody.appendChild(tr);
+                    });
+                }
+                showMsg(`Đã lọc ${filtered.length} môn của giáo viên`, 'success');
+            } catch (err) {
+                console.error(err);
+                showMsg(err.message || 'Lỗi khi lọc theo giáo viên', 'error');
+            }
+        }
+
+
+
+        // initial load
+        window.onload = async () => {
+            await loadOptions();
+            await loadAssignments();
+        };
+    </script>
+</body>
+
+</html>
