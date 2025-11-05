@@ -8,120 +8,178 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f4f6f9;
+    /* ====================== RESET & BASE ====================== */
+    * {
+      box-sizing: border-box;
       margin: 0;
+      padding: 0;
     }
 
-    /* HEADER */
-    header {
-      background-color: #1e3a8a;
-      color: white;
-      padding: 15px 40px;
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f5f8fc;
+      color: #1e293b;
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ====================== HEADER ====================== */
+    header {
+      background-color: #e9f1fb;
+      border-bottom: 1px solid #d3e0f0;
+      display: flex;
       align-items: center;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+      justify-content: center;
+      padding: 16px 0;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      height: 120px;
+    }
+
+    header img {
+      width: 58px;
+      height: 58px;
+      position: absolute;
+      left: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 100px;
+      width: 100px;
     }
 
     header h1 {
-      margin: 0;
-      font-size: 20px;
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a2a5b;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    /* ====================== LAYOUT ====================== */
+    .wrapper {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      flex: 1;
+      min-height: calc(100vh - 110px);
+    }
+
+    /* ====================== SIDEBAR ====================== */
+    aside {
+      background-color: #0b2347;
+      color: #fff;
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    aside h2 {
+      font-size: 18px;
       font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin-left: 25px;
-      font-weight: 500;
-      transition: 0.3s;
-    }
-
-    nav a:hover {
-      color: #fbbf24;
-      text-decoration: underline;
-    }
-
-    /* CONTAINER */
-    .container {
-      max-width: 1200px;
-      margin: 30px auto;
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    }
-
-    .container h2 {
       text-align: center;
-      color: #1e3a8a;
-      margin-bottom: 20px;
-      font-size: 24px;
+      color: #a8c6ff;
+      margin-bottom: 16px;
     }
 
-    /* FORM */
+    aside a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 10px 12px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    aside a:hover,
+    aside a.active {
+      background-color: #1e3a8a;
+    }
+
+    /* ====================== CONTENT ====================== */
+    main {
+      background-color: #f5f8fc;
+      padding: 28px 32px;
+      overflow-y: auto;
+    }
+
+    main h2 {
+      font-size: 20px;
+      color: #1a2a5b;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .content-box {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e3eaf2;
+    }
+
+    /* ====================== FORMS ====================== */
     form {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 15px;
-      margin-bottom: 20px;
+      gap: 12px;
+      margin-bottom: 16px;
     }
 
     input,
     select {
-      padding: 12px;
-      border-radius: 10px;
+      padding: 10px;
+      border-radius: 6px;
       border: 1px solid #d1d5db;
+      background: #fff;
       font-size: 14px;
       width: 100%;
-      box-sizing: border-box;
     }
 
     input:focus,
     select:focus {
-      border-color: #2563eb;
-      outline: none;
-      box-shadow: 0 0 4px rgba(96, 165, 250, 0.15);
+      outline: 2px solid #bfdbfe;
     }
 
-    button[type="submit"] {
-      grid-column: span 2;
-      padding: 12px 0;
-      background: linear-gradient(90deg, #2563eb, #1e40af);
-      color: white;
+    button {
+      padding: 10px 12px;
+      border-radius: 6px;
       border: none;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 15px;
       cursor: pointer;
-      transition: 0.3s;
+      font-weight: 600;
+      font-size: 14px;
     }
 
-    button[type="submit"]:hover {
-      background: linear-gradient(90deg, #1e40af, #1e3a8a);
+    .btn.primary {
+      background: #1e3a8a;
+      color: #fff;
     }
 
-    /* TABLE */
-    .table-card {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    .btn.primary:hover {
+      background: #162c6a;
+    }
+
+    /* ====================== TABLE ====================== */
+    .table-wrap {
       overflow-x: auto;
+      border-radius: 8px;
+      margin-top: 10px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 15px;
-      background: white;
+      min-width: 760px;
     }
 
     th,
     td {
-      padding: 14px 18px;
+      padding: 10px 12px;
+      border: 1px solid #e5eaf2;
+      font-size: 14px;
       text-align: left;
     }
 
@@ -137,183 +195,115 @@
     }
 
     tr:hover {
-      background: #e6f0ff;
-      transition: 0.2s;
+      background: #eef3ff;
     }
 
-    /* ACTION BUTTONS */
-    .btn {
-      border: none;
-      border-radius: 6px;
-      padding: 6px 10px;
-      cursor: pointer;
-      font-size: 13px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+    /* ====================== FOOTER ====================== */
+    footer {
+      background-color: #e9f1fb;
+      border-top: 1px solid #d3e0f0;
+      text-align: center;
+      padding: 10px 0;
+      color: #1a2a5b;
+      font-weight: 500;
+      font-size: 14px;
     }
 
-    .edit-btn {
-      background: #fbbf24;
-      color: #1f2937;
-    }
-
-    .edit-btn:hover {
-      background: #f59e0b;
-    }
-
-    .delete-btn {
-      background: #ef4444;
-      color: white;
-    }
-
-    .delete-btn:hover {
-      background: #dc2626;
-    }
-
-    /* MESSAGE BOX */
+    /* ====================== MESSAGE BOX ====================== */
     #msgBox {
       position: fixed;
       top: 20px;
       right: 20px;
       background: #16a34a;
-      color: white;
-      padding: 14px 20px;
-      border-radius: 10px;
-      font-weight: 500;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 8px;
       display: none;
-      z-index: 999;
+      z-index: 9999;
     }
 
     #msgBox.error {
       background: #dc2626;
     }
-
-    /* FOOTER */
-    footer {
-      background: #1e3a8a;
-      color: #fff;
-      text-align: center;
-      padding: 15px 0;
-      margin-top: 30px;
-      font-size: 14px;
-    }
-
-    .filter-buttons {
-      display: flex;
-      gap: 10px;
-      margin-top: 5px;
-    }
-
-    .btn-filter {
-      background: #2563eb;
-      color: #fff;
-      border: none;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 14px;
-      cursor: pointer;
-      font-weight: 500;
-      transition: 0.25s;
-    }
-
-    .btn-filter:hover {
-      background: #1e3a8a;
-      transform: translateY(-2px);
-    }
-
-
-    @media(max-width:900px) {
-      form {
-        grid-template-columns: 1fr;
-      }
-
-      button[type="submit"] {
-        grid-column: span 1;
-      }
-
-      table,
-      th,
-      td {
-        font-size: 14px;
-        padding: 12px;
-      }
-    }
   </style>
 </head>
 
 <body>
-
+  <!-- HEADER (identical to students.html) -->
   <header>
-    <h1><i class="fa-solid fa-calendar-days"></i> Admin Portal</h1>
-    <nav>
-      <a href="admins.html"><i class="fa fa-home"></i> Trang chủ</a>
-      <a href="students.html"><i class="fa fa-user-graduate"></i> Sinh viên</a>
-      <a href="teachers.html"><i class="fa fa-chalkboard-teacher"></i> Giáo viên</a>
-      <a href="subjects.html"><i class="fa fa-book"></i> Môn học</a>
-      <a href="assignments.html"><i class="fa fa-link"></i> Gán</a>
-      <a href="schedules.html" style="color:#fbbf24;"><i class="fa fa-calendar"></i> Thời khóa biểu</a>
-    </nav>
+    <img src="anh/Thiết kế chưa có tên.png" alt="Logo hệ thống">
+    <h1>HỆ THỐNG QUẢN LÝ HỌC SINH VÀ GIÁO VIÊN TRƯỜNG TIỂU HỌC CHU MINH</h1>
   </header>
 
-  <div class="container">
-    <h2>Quản lý Thời khóa biểu</h2>
+  <!-- SIDEBAR + CONTENT (sidebar identical to students.html) -->
+  <div class="wrapper">
+    <aside>
+      <h2>BẢNG ĐIỀU KHIỂN</h2>
+      <a href="admins.html"><i class="fa fa-home"></i>  Trang chủ</a>
+      <a href="students.html"><i class="fa fa-user-graduate"></i>  Quản lý học sinh</a>
+      <a href="teachers.html"><i class="fa fa-chalkboard-teacher"></i>  Quản lý giáo viên</a>
+      <a href="subjects.html"><i class="fa fa-book"></i>  Quản lý môn học</a>
+      <a href="assignments.html"><i class="fa fa-link"></i> Gán môn - giáo viên</a>
+      <a href="schedules.html" class="active"><i class="fa fa-calendar"></i>Thời khóa biểu</a>
+    </aside>
 
-    <form id="scheduleForm">
-      <input type="hidden" id="scheduleId">
-      <input id="dayOfWeek" type="number" placeholder="Ngày trong tuần (1-7)" min="1" max="7" required>
-      <input id="period" type="number" placeholder="Tiết" min="1" required>
-      <select id="classSubjectTeacherId" required>
-        <option value="">Chọn Lớp - Môn - Giáo viên</option>
-      </select>
+    <!-- MAIN: structure & classes from students.html; content from schedules.html only -->
+    <main>
+      <h2>Quản lý thời khóa biểu</h2>
 
-      <div class="filter-buttons">
-        <button type="button" class="btn-filter" onclick="filterByClass()">
-          <i class="fa fa-filter"></i> Lọc theo lớp
-        </button>
-        <button type="button" class="btn-filter" onclick="filterByTeacher()">
-          <i class="fa fa-chalkboard-teacher"></i> Lọc theo giáo viên
-        </button>
+      <div class="content-box">
+        <form id="scheduleForm">
+          <input type="hidden" id="scheduleId">
+          <input id="dayOfWeek" type="number" placeholder="Ngày trong tuần (1-7)" min="1" max="7" required>
+          <input id="period" type="number" placeholder="Tiết" min="1" required>
+
+          <select id="classSubjectTeacherId" required>
+            <option value="">Chọn Lớp - Môn - Giáo viên</option>
+          </select>
+
+          <div style="display:flex; gap:10px; align-items:center;">
+            <button type="button" class="btn primary" onclick="filterByClass()" style="height:44px;">
+              <i class="fa fa-filter"></i> Lọc theo lớp
+            </button>
+            <button type="button" class="btn primary" onclick="filterByTeacher()" style="height:44px;">
+              <i class="fa fa-chalkboard-teacher"></i> Lọc theo giáo viên
+            </button>
+          </div>
+
+          <button type="submit" class="btn primary" style="grid-column: span 2; margin-top:8px; width: 200px;">
+            <i class="fa fa-save"></i> Lưu Thời khóa biểu
+          </button>
+        </form>
+
+        <div class="table-wrap">
+          <table id="schedulesTable" aria-describedby="Danh sách thời khóa biểu">
+            <thead>
+              <tr>
+                <th style="width:80px">ID</th>
+                <th style="width:120px">Ngày</th>
+                <th style="width:100px">Tiết</th>
+                <th>Lớp - Môn - Giáo viên</th>
+                <th style="width:140px; text-align:center">Hành động</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
       </div>
-
-      <button type="submit"><i class="fa fa-save"></i> Lưu Thời khóa biểu</button>
-
-    </form>
-    <div class="table-card">
-      <table id="schedulesTable">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Ngày</th>
-            <th>Tiết</th>
-            <th>Lớp - Môn - Giáo viên</th>
-            <th>Hành động</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+    </main>
   </div>
 
+  <!-- message box and footer identical to students.html -->
   <div id="msgBox"></div>
 
-  <footer>
-    © 2025 Hệ thống Quản lý Trường học. Designed by Admin.
+  <footer class="site-footer">
+    © 2025 Hệ thống quản lý học sinh và giáo viên - Nhóm 3
   </footer>
 
-  <!-- api.js must be included (provides apiGet/apiPost/apiPut/apiDelete) -->
+  <!-- giữ nguyên api.js và toàn bộ JS bạn đã gửi (không thay đổi logic) -->
   <script src="api.js"></script>
   <script>
-    /* schedules page: uses api.js helpers (apiGet/apiPost/apiPut/apiDelete)
-       Endpoints:
-       - GET  /admin/class-subject-teachers
-       - GET  /admin/schedules
-       - GET  /admin/schedules/{id}
-       - POST /admin/schedules
-       - PUT  /admin/schedules/{id}
-       - DELETE /admin/schedules/{id}
-    */
 
     function showMsg(msg, type = 'success') {
       const box = document.getElementById('msgBox');
@@ -332,19 +322,18 @@
           const opt = document.createElement('option');
           opt.value = cst.id;
           opt.textContent = `${cst.className} - ${cst.subjectName} (${cst.teacherName})`;
-          opt.dataset.classId = cst.classId;        // 👈 thêm
-          opt.dataset.teacherId = cst.teacherId;    // 👈 thêm
+          opt.dataset.classId = cst.classId;
+          opt.dataset.teacherId = cst.teacherId;
           sel.appendChild(opt);
         });
       } catch (e) {
         console.error(e);
-        showMsg(e.message || 'Lỗi tải danh sách lớp-môn-giáo viên', 'error');
+        showMsg(e.message || 'Lỗi tải danh sách lớp-môn-giá viên', 'error');
       }
     }
 
     async function loadSchedules() {
       try {
-        // ensure dropdown is up-to-date
         await loadClassSubjectTeachers();
 
         const data = await apiGet('/admin/schedules');
@@ -357,7 +346,7 @@
         <td>${s.dayOfWeek}</td>
         <td>${s.period}</td>
         <td>${s.className || ''} - ${s.subjectName || ''} (${s.teacherName || ''})</td>
-        <td>
+        <td style="text-align:center">
           <button class="btn edit-btn" onclick="editSchedule(${s.id})"><i class="fa fa-pen"></i></button>
           <button class="btn delete-btn" onclick="deleteSchedule(${s.id})"><i class="fa fa-trash"></i></button>
         </td>
@@ -392,7 +381,6 @@
         loadSchedules();
       } catch (e) {
         console.error(e);
-        // api.js throws Error with message extracted from backend (if available)
         showMsg(e.message || 'Lỗi khi lưu thời khóa biểu', 'error');
       }
     };
@@ -438,7 +426,7 @@
         <td>${s.dayOfWeek}</td>
         <td>${s.period}</td>
         <td>${s.className} - ${s.subjectName} (${s.teacherName})</td>
-        <td>
+        <td style="text-align:center">
           <button class="btn edit-btn" onclick="editSchedule(${s.id})"><i class="fa fa-pen"></i></button>
           <button class="btn delete-btn" onclick="deleteSchedule(${s.id})"><i class="fa fa-trash"></i></button>
         </td>
@@ -465,7 +453,7 @@
         <td>${s.dayOfWeek}</td>
         <td>${s.period}</td>
         <td>${s.className} - ${s.subjectName} (${s.teacherName})</td>
-        <td>
+        <td style="text-align:center">
           <button class="btn edit-btn" onclick="editSchedule(${s.id})"><i class="fa fa-pen"></i></button>
           <button class="btn delete-btn" onclick="deleteSchedule(${s.id})"><i class="fa fa-trash"></i></button>
         </td>
@@ -476,8 +464,6 @@
         showMsg(e.message || 'Lỗi lọc theo giáo viên', 'error');
       }
     }
-
-
 
     // initial load
     window.onload = loadSchedules;

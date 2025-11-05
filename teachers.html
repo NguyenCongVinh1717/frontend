@@ -1,134 +1,220 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quản lý Giáo viên | Admin Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
+    /* ====================== RESET & BASE ====================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #f4f6f9;
-      margin: 0;
-    }
-
-    /* HEADER */
-    header {
-      background-color: #1e3a8a;
-      color: white;
-      padding: 15px 40px;
+      background-color: #f5f8fc;
+      color: #1e293b;
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ====================== HEADER ====================== */
+    header {
+      background-color: #e9f1fb;
+      border-bottom: 1px solid #d3e0f0;
+      display: flex;
       align-items: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+      justify-content: center;
+      padding: 16px 0;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      height: 120px;
     }
+
+    header img {
+      width: 58px;
+      height: 58px;
+      position: absolute;
+      left: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 100px;
+      width: 100px;
+    }
+
     header h1 {
-      margin: 0;
-      font-size: 20px;
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a2a5b;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    /* ====================== LAYOUT ====================== */
+    .wrapper {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      flex: 1;
+      min-height: calc(100vh - 110px);
+    }
+
+    /* ====================== SIDEBAR ====================== */
+    aside {
+      background-color: #0b2347;
+      color: #fff;
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    aside h2 {
+      font-size: 18px;
       font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin-left: 25px;
-      font-weight: 500;
-      transition: 0.3s;
-    }
-    nav a:hover {
-      text-decoration: underline;
-      color: #fbbf24;
-    }
-
-    /* CONTAINER */
-    .container {
-      max-width: 1200px;
-      margin: 30px auto;
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    }
-    .container h2 {
       text-align: center;
-      color: #1e3a8a;
-      margin-bottom: 30px;
-      font-size: 24px;
+      color: #a8c6ff;
+      margin-bottom: 16px;
     }
 
-    /* FORM */
+    aside a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 10px 12px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    aside a:hover,
+    aside a.active {
+      background-color: #1e3a8a;
+    }
+
+    /* ====================== MAIN ====================== */
+    main {
+      background-color: #f5f8fc;
+      padding: 28px 32px;
+      overflow-y: auto;
+    }
+
+    main h2 {
+      font-size: 20px;
+      color: #1a2a5b;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .content-box {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e3eaf2;
+    }
+
+    /* ====================== FORMS (same style as students.html) ====================== */
     form {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 15px;
-      margin-bottom: 25px;
-    }
-    input, select {
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #d1d5db;
-      font-size: 14px;
-      transition: border 0.3s;
-    }
-    input:focus, select:focus {
-      border-color: #2563eb;
-      outline: none;
-    }
-    button[type="submit"] {
-      grid-column: span 2;
-      padding: 12px 0;
-      background: linear-gradient(90deg,#2563eb,#1e40af);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 15px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    button[type="submit"]:hover {
-      background: linear-gradient(90deg,#1e40af,#1e3a8a);
+      gap: 12px;
+      margin-bottom: 16px;
     }
 
-    /* TABLE */
+    input,
+    select {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      background: #fff;
+      font-size: 14px;
+    }
+
+    input:focus,
+    select:focus {
+      outline: 2px solid #bfdbfe;
+    }
+
+    button {
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .btn.primary {
+      background: #1e3a8a;
+      color: #fff;
+    }
+
+    .btn.primary:hover {
+      background: #162c6a;
+    }
+
+    /* ====================== TABLE ====================== */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+      min-width: 760px;
     }
-    th {
-      background: #1e3a8a;
-      color: white;
-      text-transform: uppercase;
-      font-size: 13px;
-      padding: 12px;
-    }
+
+    th,
     td {
-      padding: 12px;
-      border-bottom: 1px solid #e5e7eb;
+      padding: 10px 12px;
+      border: 1px solid #e5eaf2;
+      font-size: 14px;
       text-align: left;
     }
-    tr:hover { background: #f9fafb; }
 
-    /* ACTION BUTTONS */
-    .btn {
-      border: none;
-      border-radius: 6px;
-      padding: 6px 10px;
-      cursor: pointer;
+    th {
+      background: #1e3a8a;
+      color: #fff;
+      text-transform: uppercase;
       font-size: 13px;
+    }
+
+    tr:nth-child(even) {
+      background: #f9fafb;
+    }
+
+    tr:hover {
+      background: #eef3ff;
+    }
+
+    /* ACTION ICONS */
+    .action-icons {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 6px;
+      border: none;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      transition: 0.3s;
+      justify-content: center;
+      color: black;
+      cursor: pointer;
     }
-    .edit-btn { background: #fbbf24; color: #1f2937; }
-    .edit-btn:hover { background: #f59e0b; }
-    .delete-btn { background: #ef4444; color: white; }
-    .delete-btn:hover { background: #dc2626; }
 
     /* MESSAGE BOX */
     #msgBox {
@@ -136,204 +222,218 @@
       top: 20px;
       right: 20px;
       background: #16a34a;
-      color: white;
-      padding: 14px 20px;
-      border-radius: 10px;
-      font-weight: 500;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-      display: none;
-      z-index: 999;
-    }
-    #msgBox.error { background: #dc2626; }
-
-    /* FOOTER */
-    footer {
-      background: #1e3a8a;
       color: #fff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      display: none;
+      z-index: 9999;
+    }
+
+    #msgBox.error {
+      background: #dc2626;
+    }
+
+    footer {
+      background-color: #e9f1fb;
+      border-top: 1px solid #d3e0f0;
       text-align: center;
-      padding: 15px 0;
-      margin-top: 30px;
+      padding: 10px 0;
+      color: #1a2a5b;
+      font-weight: 500;
       font-size: 14px;
     }
   </style>
 </head>
+
 <body>
+  <!-- HEADER (identical to students.html) -->
+  <header>
+    <img src="anh/Thiết kế chưa có tên.png" alt="Logo hệ thống">
+    <h1>HỆ THỐNG QUẢN LÝ HỌC SINH VÀ GIÁO VIÊN TRƯỜNG TIỂU HỌC CHU MINH</h1>
+  </header>
 
-<header>
-  <h1><i class="fa-solid fa-chalkboard-teacher"></i> Admin Portal</h1>
-  <nav>
-    <a href="admins.html"><i class="fa fa-home"></i> Trang chủ</a>
-    <a href="students.html"><i class="fa fa-user-graduate"></i> Sinh viên</a>
-    <a href="teachers.html" style="color:#fbbf24;"><i class="fa fa-chalkboard-teacher"></i> Giáo viên</a>
-    <a href="subjects.html"><i class="fa fa-book"></i> Môn học</a>
-    <a href="assignments.html"><i class="fa fa-link"></i> Gán</a>
-    <a href="schedules.html"><i class="fa fa-calendar"></i> Thời khóa biểu</a>
-  </nav>
-</header>
+  <div class="wrapper">
+    <!-- SIDEBAR (identical to students.html) -->
+    <aside>
+      <h2>BẢNG ĐIỀU KHIỂN</h2>
+      <a href="admins.html"><i class="fa fa-home"></i> Trang chủ</a>
+      <a href="students.html"><i class="fa fa-user-graduate"></i> Quản lý học sinh</a>
+      <a href="teachers.html" class="active"><i class="fa fa-chalkboard-teacher"></i> Quản lý giáo viên</a>
+      <a href="subjects.html"><i class="fa fa-book"></i> Quản lý môn học</a>
+      <a href="assignments.html"><i class="fa fa-link"></i> Gán môn - giáo viên</a>
+      <a href="schedules.html"><i class="fa fa-calendar"></i> Thời khóa biểu</a>
+    </aside>
 
-<div class="container">
-  <h2>Quản lý Giáo viên</h2>
+    <!-- MAIN (uses same kinds of elements as students.html — no col classes) -->
+    <main>
+      <h2>Quản lý giáo viên</h2>
 
-  <form id="teacherForm">
-    <input type="hidden" id="teacherId">
-    <input placeholder="Mã giáo viên" id="teacherCode" required>
-    <input placeholder="Họ và tên" id="fullName" required>
-    <input type="date" id="dob" placeholder="Ngày sinh">
-    <select id="gender">
-      <option value="">Giới tính</option>
-      <option value="Male">Nam</option>
-      <option value="Female">Nữ</option>
-    </select>
-    <input type="email" placeholder="Email" id="email">
-    <input placeholder="Điện thoại" id="phone">
-    <button type="submit"><i class="fa fa-save"></i> Lưu giáo viên</button>
-  </form>
+      <div class="content-box">
+        <!-- FORM: same simple grid as students.html -->
+        <form id="teacherForm">
+          <input type="hidden" id="teacherId">
+          <input id="teacherCode" placeholder="Mã giáo viên" required>
+          <input id="fullName" placeholder="Họ và tên" required>
+          <input id="dob" type="date" placeholder="Ngày sinh">
+          <select id="gender">
+            <option value="">Giới tính</option>
+            <option value="Nam">Nam</option>
+            <option value="Nữ">Nữ</option>
+          </select>
+          <input id="email" type="email" placeholder="Email">
+          <input id="phone" placeholder="Điện thoại">
+          <button type="submit" class="btn primary"><i class="fa fa-save"></i> Lưu giáo viên</button>
+        </form>
 
-  <!-- LỌC GIÁO VIÊN THEO TÊN -->
-<div style="margin-bottom:20px; display:flex; align-items:center; gap:10px;">
-  <label for="filterTeacherName" style="font-weight:600;">Tìm theo tên:</label>
-  <input type="text" id="filterTeacherName" placeholder="Nhập tên giáo viên" style="padding:10px; border-radius:8px; border:1px solid #d1d5db; min-width:200px;">
-  <button class="btn" style="background:#2563eb; color:white;" onclick="filterByTeacherName()">
-    <i class="fa fa-search"></i> Tìm
-  </button>
-  <button class="btn" style="background:#2563eb; color:white;" onclick="loadTeachers()">
-    <i class="fa fa-rotate"></i> Tải lại
-  </button>
-</div>
+        <!-- Controls: search and reload (same style as students.html) -->
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:8px;">
+          <input id="filterTeacherName" type="text" placeholder="Nhập tên giáo viên..."
+            style="padding:8px; border-radius:6px; border:1px solid #d1d5db; min-width:200px;">
+          <button class="btn primary" onclick="filterByTeacherName()"><i class="fa fa-search"></i> Tìm</button>
+          <button class="btn primary" onclick="loadTeachers()"><i class="fa fa-rotate"></i> Tải lại</button>
+        </div>
 
+        <!-- TABLE -->
+        <div class="table-wrap">
+          <table id="teachersTable">
+            <thead>
+              <tr>
+                <th style="width:110px">Mã GV</th>
+                <th>Họ tên</th>
+                <th style="width:150px">Ngày sinh</th>
+                <th style="width:110px">Giới tính</th>
+                <th>Email</th>
+                <th style="width:140px">Điện thoại</th>
+                <th style="width:120px">Hành động</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
 
-  <table id="teachersTable">
-    <thead>
-      <tr>
-        <th>Mã GV</th>
-        <th>Họ tên</th>
-        <th>Ngày sinh</th>
-        <th>Giới tính</th>
-        <th>Email</th>
-        <th>Điện thoại</th>
-        <th>Hành động</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>
+      </div>
+    </main>
+  </div>
 
-<div id="msgBox"></div>
+  <div id="msgBox"></div>
 
-<footer>
-  © 2025 Hệ thống Quản lý Trường học. Designed by Admin.
-</footer>
+  <footer>© 2025 Hệ thống quản lý học sinh và giáo viên - Nhóm 3</footer>
 
-<script src="api.js"></script>
-<script>
-function showMsg(msg, type='success'){
-  const box=document.getElementById('msgBox');
-  box.innerText=msg;
-  box.className=type==='error'?'error':'';
-  box.style.display='block';
-  setTimeout(()=>box.style.display='none',3000);
-}
+  <!-- giữ nguyên api.js -->
+  <script src="api.js"></script>
 
-async function loadTeachers(){
-  try{
-    const data = await apiGet('/admin/teachers');
-    const tbody=document.querySelector('#teachersTable tbody');
-    tbody.innerHTML='';
-    data.forEach(t=>{
-      tbody.innerHTML+=`
-      <tr>
-        <td>${t.teacherCode}</td>
-        <td>${t.fullName}</td>
-        <td>${t.dob || ''}</td>
-        <td>${t.gender || ''}</td>
-        <td>${t.email || ''}</td>
-        <td>${t.phone || ''}</td>
-        <td>
-          <button class="btn edit-btn" onclick="editTeacher(${t.id})"><i class="fa fa-pen"></i></button>
-          <button class="btn delete-btn" onclick="deleteTeacher(${t.id})"><i class="fa fa-trash"></i></button>
-        </td>
-      </tr>`;
-    });
-  }catch(e){ showMsg(e.message,'error'); }
-}
+  <!-- JS logic (giữ nguyên endpoints / chức năng như file trước) -->
+  <script>
+    function showMsg(msg, type = 'success') {
+      const box = document.getElementById('msgBox');
+      box.innerText = msg;
+      box.className = type === 'error' ? 'error' : '';
+      box.style.display = 'block';
+      box.style.background = type === 'error' ? '#dc2626' : '#16a34a';
+      setTimeout(() => box.style.display = 'none', 3000);
+    }
 
-document.getElementById('teacherForm').onsubmit = async e => {
-  e.preventDefault();
-  const id=document.getElementById('teacherId').value;
-  const dto={
-    teacherCode:document.getElementById('teacherCode').value,
-    fullName:document.getElementById('fullName').value,
-    dob:document.getElementById('dob').value,
-    gender:document.getElementById('gender').value,
-    email:document.getElementById('email').value,
-    phone:document.getElementById('phone').value
-  };
-  try{
-    if(id) await apiPut('/admin/teachers/'+id, dto);
-    else await apiPost('/admin/teachers', dto);
-    showMsg('Lưu thành công!');
-    document.getElementById('teacherForm').reset();
-    loadTeachers();
-  }catch(e){ showMsg(e.message,'error'); }
-};
+    async function loadTeachers() {
+      try {
+        const data = await apiGet('/admin/teachers');
+        const tbody = document.querySelector('#teachersTable tbody');
+        tbody.innerHTML = '';
+        data.forEach(t => {
+          tbody.innerHTML += `
+            <tr>
+              <td>${t.teacherCode || ''}</td>
+              <td>${t.fullName || ''}</td>
+              <td>${t.dob || ''}</td>
+              <td>${t.gender || ''}</td>
+              <td>${t.email || ''}</td>
+              <td>${t.phone || ''}</td>
+              <td style="text-align:right">
+                <div class="action-icons">
+                  <button class="icon-btn" title="Sửa" onclick="editTeacher(${t.id})"><i class="fa fa-pen"></i></button>
+                  <button class="icon-btn" title="Xóa" onclick="deleteTeacher(${t.id})"><i class="fa fa-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+      } catch (e) { showMsg(e.message || 'Lỗi khi tải giáo viên', 'error'); }
+    }
 
-async function editTeacher(id){
-  try{
-    const t=await apiGet('/admin/teachers/'+id);
-    document.getElementById('teacherId').value=t.id;
-    document.getElementById('teacherCode').value=t.teacherCode;
-    document.getElementById('fullName').value=t.fullName;
-    document.getElementById('dob').value=t.dob || '';
-    document.getElementById('gender').value=t.gender || '';
-    document.getElementById('email').value=t.email || '';
-    document.getElementById('phone').value=t.phone || '';
-  }catch(e){ showMsg(e.message,'error'); }
-}
+    document.getElementById('teacherForm').onsubmit = async e => {
+      e.preventDefault();
+      const id = document.getElementById('teacherId').value;
+      const dto = {
+        teacherCode: document.getElementById('teacherCode').value,
+        fullName: document.getElementById('fullName').value,
+        dob: document.getElementById('dob').value,
+        gender: document.getElementById('gender').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value
+      };
+      try {
+        if (id) await apiPut('/admin/teachers/' + id, dto);
+        else await apiPost('/admin/teachers', dto);
+        showMsg('Lưu thành công!');
+        document.getElementById('teacherForm').reset();
+        document.getElementById('teacherId').value = '';
+        loadTeachers();
+      } catch (e) { showMsg(e.message || 'Lỗi khi lưu', 'error'); }
+    };
 
-async function deleteTeacher(id){
-  if(!confirm('Xóa giáo viên này?')) return;
-  try{
-    await apiDelete('/admin/teachers/'+id);
-    showMsg('Đã xóa!');
-    loadTeachers();
-  }catch(e){ showMsg(e.message,'error'); }
-}
+    async function editTeacher(id) {
+      try {
+        const t = await apiGet('/admin/teachers/' + id);
+        document.getElementById('teacherId').value = t.id;
+        document.getElementById('teacherCode').value = t.teacherCode || '';
+        document.getElementById('fullName').value = t.fullName || '';
+        document.getElementById('dob').value = t.dob || '';
+        document.getElementById('gender').value = t.gender || '';
+        document.getElementById('email').value = t.email || '';
+        document.getElementById('phone').value = t.phone || '';
+        window.scrollTo({ top: 120, behavior: 'smooth' });
+      } catch (e) { showMsg(e.message || 'Lỗi khi lấy thông tin', 'error'); }
+    }
 
-// === TÌM GIÁO VIÊN THEO TÊN ===
-async function filterByTeacherName() {
-  const name = document.getElementById('filterTeacherName').value.trim();
-  if(!name) {
-    loadTeachers();
-    return;
-  }
-  try {
-    const data = await apiGet('/admin/teachersWithName/' + encodeURIComponent(name));
-    const tbody = document.querySelector('#teachersTable tbody');
-    tbody.innerHTML = '';
-    data.forEach(t => {
-      tbody.innerHTML += `
-      <tr>
-        <td>${t.teacherCode}</td>
-        <td>${t.fullName}</td>
-        <td>${t.dob || ''}</td>
-        <td>${t.gender || ''}</td>
-        <td>${t.email || ''}</td>
-        <td>${t.phone || ''}</td>
-        <td>
-          <button class="btn edit-btn" onclick="editTeacher(${t.id})"><i class="fa fa-pen"></i></button>
-          <button class="btn delete-btn" onclick="deleteTeacher(${t.id})"><i class="fa fa-trash"></i></button>
-        </td>
-      </tr>`;
-    });
-    showMsg(`Đã tìm ${data.length} giáo viên`);
-  } catch(e) {
-    showMsg(e.message, 'error');
-  }
-}
+    async function deleteTeacher(id) {
+      if (!confirm('Xóa giáo viên này?')) return;
+      try {
+        await apiDelete('/admin/teachers/' + id);
+        showMsg('Đã xóa!');
+        loadTeachers();
+      } catch (e) { showMsg(e.message || 'Lỗi khi xóa', 'error'); }
+    }
 
+    async function filterByTeacherName() {
+      const name = document.getElementById('filterTeacherName').value.trim();
+      if (!name) { loadTeachers(); return; }
+      try {
+        const data = await apiGet('/admin/teachersWithName/' + encodeURIComponent(name));
+        const tbody = document.querySelector('#teachersTable tbody');
+        tbody.innerHTML = '';
+        data.forEach(t => {
+          tbody.innerHTML += `
+            <tr>
+              <td>${t.teacherCode || ''}</td>
+              <td>${t.fullName || ''}</td>
+              <td>${t.dob || ''}</td>
+              <td>${t.gender || ''}</td>
+              <td>${t.email || ''}</td>
+              <td>${t.phone || ''}</td>
+              <td style="text-align:right">
+                <div class="action-icons">
+                  <button class="icon-btn" title="Sửa" onclick="editTeacher(${t.id})"><i class="fa fa-pen"></i></button>
+                  <button class="icon-btn" title="Xóa" onclick="deleteTeacher(${t.id})"><i class="fa fa-trash"></i></button>
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+        showMsg(`Đã tìm ${data.length} giáo viên`);
+      } catch (e) { showMsg(e.message || 'Lỗi khi tìm', 'error'); }
+    }
 
-window.onload=loadTeachers;
-</script>
-
+    window.onload = loadTeachers;
+  </script>
 </body>
+
 </html>

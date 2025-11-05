@@ -1,11 +1,10 @@
-// api.js - central API helper
-const API_BASE = "http://localhost:8080/api"; // adjust if your backend runs on different origin/port
+
+const API_BASE = "http://localhost:8080/api";
 
 function getToken() {
   return localStorage.getItem('token');
 }
 
-// unified fetch helper: path like '/auth/login' or '/admin/students'
 async function apiFetch(path, { method = 'GET', body = null, auth = true } = {}) {
   const headers = { 'Content-Type': 'application/json' };
   if (auth) {
@@ -18,13 +17,11 @@ async function apiFetch(path, { method = 'GET', body = null, auth = true } = {})
   if (body != null) opts.body = JSON.stringify(body);
 
   const res = await fetch(url, opts);
-  // If response is no-content
   if (res.status === 204) return null;
   const text = await res.text();
   let data;
   try { data = text ? JSON.parse(text) : null; } catch (e) { data = text; }
   if (!res.ok) {
-    // try to return backend message if exists
     const msg = (data && (data.message || data.error)) || res.statusText || 'Error';
     const err = new Error(String(msg));
     err.status = res.status;
@@ -39,7 +36,6 @@ async function apiPost(path, body, auth = true) { return apiFetch(path, { method
 async function apiPut(path, body) { return apiFetch(path, { method: 'PUT', body }); }
 async function apiDelete(path) { return apiFetch(path, { method: 'DELETE' }); }
 
-// Export for inline usage (in HTML we load api.js so functions are global)
 window.apiGet = apiGet;
 window.apiPost = apiPost;
 window.apiPut = apiPut;

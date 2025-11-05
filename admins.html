@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bảng điều khiển Admin</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         * {
             box-sizing: border-box;
@@ -14,7 +15,7 @@
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: #f4f6f8;
             color: #2f3e46;
             display: flex;
@@ -30,6 +31,7 @@
             border-bottom: 1px solid #cbd5e1;
             position: relative;
             height: 120px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
         }
 
         .logo-left {
@@ -45,7 +47,7 @@
 
         header h1 {
             font-size: 28px;
-            color: #1e293b;
+            color: #1a2a5b;
             font-weight: bold;
             margin-top: 23px;
         }
@@ -59,7 +61,7 @@
         /* ===== SIDEBAR ===== */
         .sidebar {
             width: 300px;
-            background-color: #1e293b;
+            background-color: #0b2347;
             color: #ffffff;
             padding: 30px 20px;
         }
@@ -68,7 +70,7 @@
             text-align: center;
             margin-bottom: 30px;
             font-size: 20px;
-            color: #a7c7e7;
+            color: #a8c6ff;
         }
 
         .menu a {
@@ -82,14 +84,13 @@
         }
 
         .menu a:hover {
-            background-color: #334155;
-            color: #93c5fd;
+            background-color: #1e3a8a;
+            color: white;
         }
 
         .menu a.active {
-            background-color: #93c5fd;
-            color: #1e293b;
-            font-weight: bold;
+            background-color: #1e3a8a;
+            color: white;
         }
 
         .menu i {
@@ -195,11 +196,12 @@
         <div class="sidebar">
             <h2>BẢNG ĐIỀU KHIỂN</h2>
             <div class="menu">
-                <a href="students.html"><i class="ri-user-3-line"></i>Quản lý học sinh</a>
-                <a href="teachers.html"><i class="ri-user-star-line"></i>Quản lý giáo viên</a>
-                <a href="subjects.html"><i class="ri-book-2-line"></i>Quản lý môn học</a>
-                <a href="assignments.html"><i class="ri-links-line"></i>Gán môn - giáo viên</a>
-                <a href="schedules.html"><i class="ri-calendar-line"></i>Thời khóa biểu</a>
+                <a href="admins.html" class="active"><i class="fa fa-home"></i> Trang chủ</a>
+                <a href="students.html"><i class="fa fa-user-graduate"></i> Quản lý học sinh</a>
+                <a href="teachers.html"><i class="fa fa-chalkboard-teacher"></i> Quản lý giáo viên</a>
+                <a href="subjects.html"><i class="fa fa-book"></i> Quản lý môn học</a>
+                <a href="assignments.html"><i class="fa fa-link"></i> Gán môn - giáo viên</a>
+                <a href="schedules.html"><i class="fa fa-calendar"></i> Thời khóa biểu</a>
             </div>
         </div>
 

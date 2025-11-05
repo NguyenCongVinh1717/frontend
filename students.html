@@ -262,23 +262,6 @@
     #msgBox.error {
       background: #dc2626;
     }
-
-    /* ====================== RESPONSIVE ====================== */
-    @media (max-width: 900px) {
-      .wrapper {
-        grid-template-columns: 1fr;
-      }
-
-      aside {
-        flex-direction: row;
-        overflow-x: auto;
-        justify-content: center;
-      }
-
-      main {
-        padding: 20px;
-      }
-    }
   </style>
 </head>
 
@@ -293,13 +276,13 @@
   <div class="wrapper">
     <aside>
       <h2>BẢNG ĐIỀU KHIỂN</h2>
-      <a href="students.html" class="active"><i class="fa fa-user-graduate"></i> Quản lý học sinh</a>
-      <a href="teachers.html"><i class="fa fa-chalkboard-teacher"></i> Quản lý giáo viên</a>
-      <a href="subjects.html"><i class="fa fa-book"></i> Quản lý môn học</a>
+      <a href="admins.html"><i class="fa fa-home"></i>  Trang chủ</a>
+      <a href="students.html" class="active"><i class="fa fa-user-graduate"></i>  Quản lý học sinh</a>
+      <a href="teachers.html"><i class="fa fa-chalkboard-teacher"></i>  Quản lý giáo viên</a>
+      <a href="subjects.html"><i class="fa fa-book"></i>  Quản lý môn học</a>
       <a href="assignments.html"><i class="fa fa-link"></i> Gán môn - giáo viên</a>
-      <a href="schedules.html"><i class="fa fa-calendar"></i> Thời khóa biểu</a>
+      <a href="schedules.html"><i class="fa fa-calendar"></i>Thời khóa biểu</a>
     </aside>
-
     <main>
       <h2>Quản lý học sinh</h2>
 
@@ -313,8 +296,8 @@
           <input type="date" id="dob">
           <select id="gender">
             <option value="">Giới tính</option>
-            <option value="Male">Nam</option>
-            <option value="Female">Nữ</option>
+            <option value="Nam">Nam</option>
+            <option value="Nữ">Nữ</option>
           </select>
           <input placeholder="Email" id="email">
           <input placeholder="Điện thoại" id="phone">
@@ -379,14 +362,13 @@
             <button class="btn danger" onclick="unenrollStudent()"><i class="fa fa-minus"></i> Hủy gán</button>
           </div>
         </div>
-
       </div>
       </section>
   </div>
 
   <!-- footer -->
   <footer class="site-footer">
-    © 2025 Hệ thống Quản lý Trường học. Designed by Admin.
+    © 2025 Hệ thống quản lý học sinh và giáo viên - Nhóm 3
   </footer>
 
   <!-- message box -->
@@ -646,7 +628,7 @@
       try {
         const data = await apiGet('/admin/students');
         const sel = document.getElementById('studentSelect');
-        sel.innerHTML = '<option value="">-- Chọn sinh viên --</option>';
+        sel.innerHTML = '<option value="">-- Chọn học sinh --</option>';
         data.forEach(s => sel.innerHTML += `<option value="${s.id}">${s.fullName}</option>`);
       } catch (e) {
         showMsg(e.message, 'error');

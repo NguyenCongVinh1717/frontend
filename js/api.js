@@ -1,41 +1,32 @@
-// js/api.js - sửa để dùng backend tại http://localhost:8080/api
-const API_BASE = 'http://localhost:8080/api'; // <-- đổi tại đây nếu backend khác
+
+const API_BASE = 'http://localhost:8080/api'; 
 
 function joinApiPath(base, path) {
-  // ensure no double slashes when joining base + path
-  const b = base.replace(/\/+$/, '');         // remove trailing slash from base
-  const p = String(path).replace(/^\/+/, ''); // remove leading slash from path
+  const b = base.replace(/\/+$/, '');        
+  const p = String(path).replace(/^\/+/, ''); 
   return b + '/' + p;
 }
 
 async function apiRequest(method, path, body = undefined, skipAuth = false) {
-  // if path is full URL (starts with http/https) use it as-is
   const url = (/^https?:\/\//i).test(path) ? path : joinApiPath(API_BASE, path);
 
   const opts = { method, headers: {} };
 
   if (body !== undefined && body !== null) {
-    // allow FormData passthrough
     if (body instanceof FormData) {
       opts.body = body;
-      // do not set Content-Type; browser will set multipart/form-data with boundary
     } else {
       opts.headers['Content-Type'] = 'application/json';
       opts.body = JSON.stringify(body);
     }
   }
 
-  // attach Authorization if token present and not skipping auth
   try {
     if (!skipAuth) {
       const token = localStorage.getItem('token');
       if (token) opts.headers['Authorization'] = 'Bearer ' + token;
     }
-  } catch (e) { /* ignore localStorage errors */ }
-
-  // If your server uses cookie-based session (instead of Bearer token),
-  // uncomment the following line so browser sends cookies:
-  // opts.credentials = 'include';
+  } catch (e) { }
 
   const res = await fetch(url, opts);
 
