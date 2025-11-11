@@ -161,6 +161,11 @@
       background: #162c6a;
     }
 
+    .btn.success {
+      background: #10b981;
+      color: #fff;
+    }
+
     /* ====================== TABLE ====================== */
     .table-wrap {
       overflow-x: auto;
@@ -244,6 +249,7 @@
       <a href="subjects.html" class="active"><i class="fa fa-book"></i> Quản lý môn học</a>
       <a href="assignments.html"><i class="fa fa-link"></i> Gán môn - giáo viên</a>
       <a href="schedules.html"><i class="fa fa-calendar"></i>Thời khóa biểu</a>
+      <a href="dangnhap.html"><i class="fa-solid fa-right-from-bracket"></i>Đăng xuất</a>
     </aside>
 
     <!-- MAIN (uses the same simple form layout as students.html — no col-* classes) -->
@@ -278,6 +284,14 @@
           </select>
           <button class="btn primary" onclick="filterByGrade()"><i class="fa fa-filter"></i> Lọc</button>
           <button class="btn primary" onclick="loadSubjects()"><i class="fa fa-rotate"></i> Tải lại</button>
+        </div>
+
+        <!-- import -->
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:12px;">
+          <label style="font-weight:600;">Nhập file:</label>
+          <input type="file" id="importFile" accept=".csv"
+            style="padding:6px; border-radius:6px; border:1px solid #d1d5db;">
+          <button class="btn success" onclick="importSubjects()"><i class="fa fa-file-import"></i> Nhập file</button>
         </div>
 
         <div class="table-wrap">
@@ -404,6 +418,37 @@
         loadSubjects();
       } catch (e) { showMsg(e.message, 'error'); }
     }
+
+    // === NHẬP FILE CSV / EXCEL ===
+    async function importSubjects() {
+      const fileInput = document.getElementById('importFile');
+      const file = fileInput.files[0];
+
+      if (!file) return showMsg('Vui lòng chọn file!', 'error');
+
+      // đọc file CSV và convert sang JSON
+      const text = await file.text();
+      const lines = text.split('\n').filter(l => l.trim() !== '');
+      const headers = lines[0].split(',');
+      const dtos = lines.slice(1).map(line => {
+        const cols = line.split(',');
+        return {
+          name: cols[0],
+          code: cols[1],
+          credit: cols[3],
+          gradeId: cols[4],
+        };
+      });
+
+      try {
+        await apiPost('/admin/import/subjects', dtos); // gửi JSON
+        showMsg('Nhập file thành công!');
+        loadSubjects();
+      } catch (e) {
+        showMsg('Lỗi khi nhập file: ' + e.message, 'error');
+      }
+    }
+
 
     async function filterByGrade() {
       const gradeId = document.getElementById('filterGrade').value;

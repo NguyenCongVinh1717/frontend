@@ -1,645 +1,765 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trang Giáo viên</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-/* teacher-modern-v2.css - Hiện đại, sạch sẽ, tinh tế hơn */
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trang Giáo viên</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    /* --- CSS dựa trên student.html layout để đồng nhất --- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-:root{
-  /* Màu sắc mới */
-  --accent: #2196F3; /* Xanh Lam tươi mới (Material Blue 500) */
-  --accent-dark: #1976D2; /* Xanh Lam đậm hơn cho hover/active */
-  --accent-light: #E3F2FD; /* Nền nhẹ của accent (Blue 50) */
-  --bg: #f8f9fa; /* Nền tổng thể rất nhẹ */
-  --card: #ffffff;
-  --text: #343a40; /* Văn bản đậm, dễ đọc (Dark Gray) */
-  --muted: #6c757d; /* Màu xám dịu */
-  --radius: 10px; /* Bo góc nhất quán, mềm mại hơn */
-  --shadow: 0 6px 16px rgba(0,0,0,0.08); /* Bóng đổ nổi bật hơn */
-  --transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
-body{
-  font-family:'Poppins',sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  display:flex;
-  min-height:100vh;
-  overflow-x:hidden;
-  font-size:16px; /* Cỡ chữ lớn hơn một chút */
-  line-height:1.6;
-}
-a, button{touch-action:manipulation;text-decoration:none}
-:focus{outline:none}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px;outline-color:rgba(33,150,243,0.5)}
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f5f8fc;
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-/* --- SIDEBAR --- */
-.sidebar{
-  width:260px; /* Rộng hơn một chút */
-  background:var(--card);
-  padding:30px 20px;
-  position:fixed;
-  left:0;top:0;bottom:0;
-  box-shadow:var(--shadow);
-  z-index:1000;
-  display:flex; /* Thêm để hỗ trợ flex column */
-  flex-direction:column;
-}
-.sidebar h4{
-  color:var(--accent);
-  font-weight:700;
-  text-align:left;
-  margin-bottom:40px;
-  letter-spacing:0.8px;
-  font-size:1.6em;
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-.sidebar a{
-  display:flex;
-  align-items:center;
-  gap:15px;
-  padding:14px 18px; /* Padding lớn hơn */
-  color:var(--text); /* Màu text mặc định */
-  border-radius:var(--radius);
-  margin:4px 0;
-  transition:all var(--transition);
-  font-weight:500;
-}
-.sidebar a i{font-size:1.2em}
-.sidebar a:hover{
-  background:var(--accent-light);
-  color:var(--accent-dark);
-}
-.sidebar a.active{
-  background:var(--accent-light);
-  color:var(--accent-dark);
-  font-weight:600;
-  border-left:5px solid var(--accent); /* Viền đậm hơn */
-  padding-left:17px; /* Cân bằng lại padding */
-}
+    /* HEADER */
+    header {
+      background-color: #e9f1fb;
+      border-bottom: 1px solid #d3e0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 0;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      height: 120px;
+    }
 
-/* --- MAIN --- */
-.main-content{margin-left:260px;padding:35px;flex:1}
+    header img {
+      position: absolute;
+      left: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 100px;
+      width: 100px;
+      object-fit: cover;
+    }
 
-/* --- HEADER --- */
-.header{
-  background:var(--card);
-  padding:24px 30px;
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  margin-bottom:35px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-left:5px solid var(--accent); /* Điểm nhấn */
-}
-.header h3{font-size:28px;margin:0;color:var(--text);font-weight:700}
-.header span{color:var(--accent);font-weight:700}
+    header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a2a5b;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      text-align: center;
+      padding: 0 40px;
+    }
 
-/* --- CONTENT --- */
-.content-card{display:none;animation:fadeIn .4s ease-out}
-.content-card.active{display:block}
+    /* LAYOUT */
+    #content {
+      display: flex;
+      align-items: stretch;
+      min-height: calc(100vh - 120px - 56px);
+      flex: 1;
+    }
 
-/* --- GENERAL CARD STYLE --- */
-.info-card{
-  background:var(--card);
-  padding:25px;
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  border:1px solid #e0e0e0; /* Thêm viền nhẹ */
-}
+    /* SIDEBAR */
+    .sidebar {
+      width: 260px;
+      background-color: #0b2347;
+      color: #fff;
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+      flex: 0 0 260px;
+    }
 
-/* --- PROFILE --- */
-.profile-card{
-  display:flex;gap:30px;align-items:center;
-  background:var(--card);padding:30px;border-radius:var(--radius);box-shadow:var(--shadow);
-  border-top:5px solid var(--accent-light);
-}
-.profile-card i{font-size:90px;color:var(--accent);min-width:90px;}
-.profile-info p{margin:6px 0;color:var(--text);line-height:1.4}
-.profile-info strong{font-weight:600;color:var(--muted)}
-.profile-info span{font-weight:500;color:var(--text)}
+    .sidebar h2 {
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+      color: #a8c6ff;
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+    }
 
-/* --- SUBJECTS --- */
-#subjectCards{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(350px,1fr));
-  gap:25px;
-  margin-top:10px;
-}
-.subject-card{
-  background:var(--card);padding:25px;border-radius:var(--radius);box-shadow:var(--shadow);
-  transition:transform var(--transition), box-shadow var(--transition);
-  border-left:6px solid var(--accent);
-}
-.subject-card:hover{transform:translateY(-5px);box-shadow:0 10px 20px rgba(0,0,0,0.1)}
-.subject-card h6{
-  margin:0 0 15px 0;color:var(--text);font-size:20px;font-weight:600;
-  display:flex;justify-content:space-between;align-items:center;
-}
-.subject-card h6 span:first-child{color:var(--accent-dark);display:flex;align-items:center;gap:10px;}
-.subject-meta{color:var(--muted);font-size:15px;margin-bottom:15px;border-bottom:1px dashed #eee;padding-bottom:10px;}
-.class-list{display:flex;flex-wrap:wrap;gap:12px;margin-top:15px}
-.class-btn{
-  background:var(--accent-light);border:1px solid var(--accent);color:var(--accent-dark);
-  padding:10px 18px;border-radius:25px;cursor:pointer;font-size:15px;
-  transition:all var(--transition);
-  font-weight:600;
-}
-.class-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent-dark)}
-.class-btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px;outline-color:rgba(33,150,243,0.3)}
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 10px 12px;
+      border-radius: 6px;
+      transition: all 0.15s ease;
+    }
 
-/* TABLE */
-.students-table{width:100%;border-collapse:collapse;border-spacing:0;margin-top:20px;overflow:hidden;border-radius:var(--radius);font-size:15px;}
-.students-table th, .students-table td{padding:14px 18px;text-align:left}
-.students-table th{background:var(--accent);color:var(--card);font-weight:600;text-transform:uppercase;font-size:13px;letter-spacing:0.5px;border-bottom:2px solid var(--accent-dark)}
-.students-table td{border-bottom:1px solid #f0f0f0;background:var(--card)}
-.students-table tbody tr:nth-child(even) td{background:#fafafa} /* Zebra stripping */
-.students-table tbody tr:hover td{background:var(--accent-light)}
-.students-table tbody tr:last-child td{border-bottom:none}
-.students-table input{
-  width:100px;padding:10px;border-radius:8px;border:1px solid #dbe8ff;text-align:center;
-  transition:border-color var(--transition), box-shadow var(--transition);
-  font-size:15px;
-}
-.students-table input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(33,150,243,0.1);}
+    .sidebar a i {
+      font-size: 18px;
+      width: 22px;
+      text-align: center;
+    }
 
-/* --- SCHEDULE --- */
-.schedule-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;margin-top:15px}
-.day-column{background:var(--card);padding:22px;border-radius:var(--radius);box-shadow:var(--shadow);border-top:4px solid var(--accent-light);}
-.day-column h6{
-  text-align:center;margin:0 0 20px 0;color:var(--accent-dark);font-size:18px;font-weight:700;
-  border-bottom:2px solid var(--accent-light);padding-bottom:10px;
-}
-.class-item{
-  background:var(--accent-light);
-  border-left:5px solid var(--accent);
-  padding:15px;
-  border-radius:8px;
-  margin-bottom:12px;
-  font-size:15px;
-  color:var(--text);
-  box-shadow:0 1px 4px rgba(0,0,0,0.05);
-}
-.class-item strong{color:var(--accent);font-weight:700;display:block;margin-bottom:2px;}
-.class-item .text-muted{font-size:14px;color:var(--muted);line-height:1.4;}
+    .sidebar a:hover,
+    .sidebar a.active {
+      background-color: #1e3a8a;
+    }
 
-/* --- PASSWORD + BUTTONS --- */
-.password-card{max-width:550px;margin:40px auto;background:var(--card);padding:40px;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid #eee;}
-.password-card h5{margin-bottom:25px;font-size:22px;font-weight:700;color:var(--accent)}
-.input{
-  width:100%;padding:14px 18px;margin-bottom:20px;border-radius:8px;
-  border:1px solid #d7e1ef;
-  transition:box-shadow var(--transition), border-color var(--transition);
-  font-size:16px;
-}
-.input:focus{box-shadow:0 0 0 4px rgba(33,150,243,0.15);outline:none;border-color:var(--accent)}
-.btn{
-  background:var(--accent);color:#fff;border:0;padding:12px 24px;border-radius:8px;
-  cursor:pointer;font-weight:600;transition:all var(--transition);
-  font-size:16px;
-}
-.btn:hover{
-  background: var(--accent-dark);
-  transform:translateY(-2px);
-  box-shadow:0 4px 10px rgba(33,150,243,0.4);
-}
-.btn.small{padding:8px 14px;font-size:14px;border-radius:6px;}
+    /* MAIN WRAPPER */
+    .main-wrap {
+      flex: 1;
+      margin-left: 0;
+      padding: 28px 32px;
+    }
 
-/* --- Responsive --- */
-@media (max-width:900px){
-  .sidebar{
-    width:100%;height:auto;position:relative;
-    display:flex;flex-direction:row;justify-content:space-between; /* Đổi thành space-between */
-    padding:10px;box-shadow:0 2px 8px rgba(0,0,0,0.05);
-    align-items:center;
-  }
-  .sidebar h4{display:none}
-  .sidebar a{
-    padding:8px 6px;margin:0;font-size:11px;gap:5px;flex-direction:column;min-width:65px;text-align:center;
-    flex-grow:1; /* Chia đều không gian */
-  }
-  .sidebar a i{font-size:1.5em}
-  .sidebar a.active{border-left:none;border-bottom:3px solid var(--accent);padding-bottom:5px;padding-left:6px; background:transparent;} /* Chỉ dùng border-bottom */
-  .sidebar a:hover{background:transparent;}
-  
-  .main-content{margin-left:0;padding:20px}
-  .header{margin-bottom:25px;padding:20px 15px}
-  .header h3{font-size:20px}
-  
-  #subjectCards{grid-template-columns:1fr}
-  .schedule-grid{grid-template-columns:1fr}
-  .profile-card{flex-direction:column;text-align:center;gap:20px;}
-  .password-card{margin:20px 0;max-width:100%;padding:30px;}
-}
-</style>
+    .content-area {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .content-box {
+      background: #fff;
+      border-radius: 10px;
+      padding: 24px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e3eaf2;
+      width: 1200px;
+    }
+
+    .content-box h2 {
+      font-size: 20px;
+      color: #1a2a5b;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .profile-list {
+      list-style: none;
+    }
+
+    .profile-list li {
+      padding: 12px 6px;
+      border-bottom: 1px dashed #eef2ff;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .profile-list li strong {
+      color: #2563eb;
+    }
+
+    /* enrollment/subject cards (keeps teacher layout but inside enrollmentSection) */
+    #subjectCards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .subject-card {
+      background: #fff;
+      border: 1px solid #e6eefc;
+      border-radius: 8px;
+      padding: 14px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+
+    .subject-card h6 {
+      margin: 0 0 8px 0;
+      color: #2563eb;
+      font-size: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Nút "Xem lớp" trong thẻ môn học */
+    .btn-load-classes {
+      background: #2563eb;
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-load-classes:hover {
+      background: #1e3a8a;
+      transform: translateY(-1px);
+    }
+
+    /* Danh sách lớp (nút hiển thị từng lớp) */
+    .class-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .class-btn {
+      background: #eef4ff;
+      color: #1e3a8a;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .class-btn:hover {
+      background: #1e3a8a;
+      color: #fff;
+    }
+
+    /* schedule — same as student */
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+    }
+
+    .day-column {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      padding: 22px;
+      min-height: 220px;
+      border: 1px solid #e5eaf2;
+      transition: transform 0.2s ease;
+    }
+
+    .day-column:hover {
+      transform: translateY(-4px);
+    }
+
+    .day-column h6 {
+      text-align: center;
+      border-bottom: 3px solid #e2e8f0;
+      color: #2563eb;
+      font-size: 18px;
+      font-weight: 600;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+
+    .class-item {
+      background: #eef4ff;
+      border-left: 6px solid #2563eb;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      font-size: 15px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .class-item strong {
+      display: block;
+      color: #1e3a8a;
+      font-size: 16px;
+      margin-bottom: 3px;
+    }
+
+    /* password section (right column) */
+    #passwordSection {
+      width: 320px;
+      margin: 0 auto;
+      text-align: center;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    #passwordSection input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    #passwordSection button {
+      width: 100%;
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+      background: #1e3a8a;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    footer {
+      background-color: #e9f1fb;
+      border-top: 1px solid #d3e0f0;
+      text-align: center;
+      padding: 10px 0;
+      color: #1a2a5b;
+      font-weight: 500;
+      font-size: 14px;
+      margin-top: 30px;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="sidebar">
-  <h4><i class="bi bi-mortarboard-fill"></i> Quản lý GV</h4>
-  <a href="#" class="active" onclick="toggleSection('profileSection', event)"><i class="bi bi-person"></i> Hồ sơ</a>
-  <a href="#" onclick="toggleSection('subjectSection', event)"><i class="bi bi-journal-bookmark"></i> Môn học</a>
-  <a href="#" onclick="toggleSection('scheduleSection', event)"><i class="bi bi-calendar-week"></i> TKB</a>
-  <a href="#" onclick="toggleSection('passwordSection', event)"><i class="bi bi-lock"></i> Mật khẩu</a>
-</div>
+  <header>
+    <img src="anh/Thiết kế chưa có tên.png" alt="Logo hệ thống">
+    <h1>HỆ THỐNG QUẢN LÝ HỌC SINH VÀ GIÁO VIÊN TRƯỜNG TIỂU HỌC CHU MINH</h1>
+  </header>
 
-<div class="main-content">
-  <div class="header">
-    <h3>Chào mừng, <span id="teacherName">...</span> 👋</h3>
-  </div>
+  <div id="content">
+    <aside class="sidebar">
+      <h2>BẢNG ĐIỀU KHIỂN</h2>
+      <!-- same IDs/onclick as student.html for toggleSection -->
+      <a href="#" class="active" onclick="toggleSection('profileSection', event)"><i class="bi bi-person-circle"></i>
+        Thông tin cá nhân</a>
+      <!-- enrollmentSection (student had enrollmentSection) - we keep this name but inside it we include subjectCards -->
+      <a href="#" onclick="toggleSection('enrollmentSection', event)"><i class="bi bi-journal-bookmark"></i> Môn giảng
+        dạy</a>
+      <a href="#" onclick="toggleSection('scheduleSection', event)"><i class="bi bi-calendar-week"></i> Thời khóa
+        biểu</a>
+      <a href="#" onclick="toggleSection('passwordSection', event)"><i class="bi bi-lock"></i> Đổi mật khẩu</a>
+      <a href="dangnhap.html"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+    </aside>
 
-  <div id="profileSection" class="content-card active">
-    <div class="profile-card">
-      <i class="bi bi-person-circle"></i>
-      <div class="profile-info">
-        <p><strong>Mã GV:</strong> <span id="teacherCode">-</span></p>
-        <p><strong>Họ tên:</strong> <span id="teacherFullName">-</span></p>
-        <p><strong>Email:</strong> <span id="teacherEmail">-</span></p>
+    <div class="main-wrap">
+      <div class="content-area">
+        <div>
+          <!-- PROFILE (same id as student.html) -->
+          <section id="profileSection" class="content-box">
+            <h2>Thông tin cá nhân</h2>
+            <ul class="profile-list">
+              <li><strong>Mã giáo viên:</strong><span id="teacherCode">-</span></li>
+              <li><strong>Họ tên:</strong><span id="teacherFullName">-</span></li>
+              <li><strong>Email:</strong><span id="teacherEmail">-</span></li>
+            </ul>
+          </section>
+
+          <!-- ENROLLMENT SECTION (reused id from student.html) - contains subjectCards for teacher JS -->
+          <section id="enrollmentSection" class="content-box" style="display:none;">
+            <h2>Môn giảng dạy</h2>
+            <!-- teacher JS expects #subjectCards, so keep it -->
+            <div id="subjectCards"></div>
+          </section>
+
+          <!-- SCHEDULE -->
+          <section id="scheduleSection" class="content-box" style="display:none;">
+            <h2>Thời khóa biểu</h2>
+            <div class="schedule-grid" id="scheduleGrid"></div>
+          </section>
+        </div>
       </div>
+      <!-- RIGHT column: same layout as student.html (password box on the right) -->
+      <section id="passwordSection" class="content-box" style="display:none;">
+        <h2>Đổi mật khẩu</h2>
+        <input type="password" id="oldPassword" placeholder="Mật khẩu cũ">
+        <input type="password" id="newPassword" placeholder="Mật khẩu mới">
+        <input type="password" id="confirmPassword" placeholder="Xác nhận mật khẩu mới">
+        <button onclick="changePassword()">Xác nhận</button>
+      </section>
     </div>
   </div>
 
-  <div id="subjectSection" class="content-card">
-    <h4 style="margin-bottom:15px;font-weight:600;color:var(--text)">Danh sách Môn giảng dạy</h4>
-    <div id="subjectCards"></div>
-  </div>
+  <footer>© 2025 Hệ thống quản lý học sinh và giáo viên - Nhóm 3</footer>
 
-  <div id="scheduleSection" class="content-card">
-    <h4 style="margin-bottom:15px;font-weight:600;color:var(--text)">Thời khóa biểu</h4>
-    <div class="schedule-grid" id="scheduleGrid"></div>
-  </div>
+  <!-- Giữ nguyên toàn bộ JS bạn cung cấp (api.js được gọi) -->
+  <script src="api.js"></script>
+  <script>
+    /* Giữ nguyên apiGet/apiPut/apiPost từ api.js */
+    const teacherId = localStorage.getItem('teacherId');
 
-  <div id="passwordSection" class="content-card">
-    <div class="password-card">
-      <h5>Đổi mật khẩu</h5>
-      <input id="oldPassword" class="input" type="password" placeholder="Mật khẩu cũ">
-      <input id="newPassword" class="input" type="password" placeholder="Mật khẩu mới">
-      <input id="confirmPassword" class="input" type="password" placeholder="Xác nhận mật khẩu mới">
-      <button class="btn" onclick="changePassword()">Xác nhận</button>
-    </div>
-  </div>
-</div>
+    window.onload = async function () {
+      if (!teacherId) { alert('Vui lòng đăng nhập lại!'); location.href = 'login.html'; return; }
+      await loadProfile();
+      await loadSubjects();
+      await loadSchedule();
+    };
 
-<script src="api.js"></script>
-<script>
-/* Giữ nguyên apiGet/apiPut/apiPost từ api.js */
-const teacherId = localStorage.getItem('teacherId');
-
-window.onload = async function(){
-  if(!teacherId){ alert('Vui lòng đăng nhập lại!'); location.href='login.html'; return; }
-  await loadProfile();
-  await loadSubjects();
-  await loadSchedule();
-};
-
-/* PROFILE */
-async function loadProfile(){
-  try{
-    const t = await apiGet(`/teacher/${teacherId}`);
-    document.getElementById('teacherName').textContent = t?.fullName ?? '-';
-    document.getElementById('teacherFullName').textContent = t?.fullName ?? '-';
-    document.getElementById('teacherCode').textContent = t?.teacherCode ?? '-';
-    document.getElementById('teacherEmail').textContent = t?.email ?? '-';
-  }catch(err){
-    console.error('loadProfile', err);
-    alert('Không tải được thông tin giáo viên.');
-  }
-}
-
-/* SUBJECTS: dedupe và hiển thị các lớp */
-async function loadSubjects(){
-  try{
-    const raw = await apiGet(`/teacher/subjectsOfTeacher/${teacherId}`);
-    const container = document.getElementById('subjectCards');
-    if(!Array.isArray(raw) || raw.length===0){
-      container.innerHTML = `<div class="info-card">Không có môn nào.</div>`;
-      return;
+    /* PROFILE */
+    async function loadProfile() {
+      try {
+        const t = await apiGet(`/teacher/${teacherId}`);
+        document.getElementById('teacherName') && (document.getElementById('teacherName').textContent = t?.fullName ?? '-');
+        document.getElementById('teacherFullName').textContent = t?.fullName ?? '-';
+        document.getElementById('teacherCode').textContent = t?.teacherCode ?? '-';
+        document.getElementById('teacherEmail').textContent = t?.email ?? '-';
+      } catch (err) {
+        console.error('loadProfile', err);
+        alert('Không tải được thông tin giáo viên.');
+      }
     }
-    const map = new Map();
-    raw.forEach(item=>{
-      const id = item.id ?? item.subjectId ?? (item.subject && item.subject.id) ?? null;
-      const name = item.subjectName ?? item.name ?? (item.subject && item.subject.name) ?? 'Không tên';
-      const key = id != null ? String(id) : `name:${name}`;
-      if(!map.has(key)) map.set(key, { id, name });
-    });
-    const subs = Array.from(map.values());
-    container.innerHTML = subs.map(s=>`
+
+    /* SUBJECTS: dedupe và hiển thị các lớp */
+    async function loadSubjects() {
+      try {
+        const raw = await apiGet(`/teacher/subjectsOfTeacher/${teacherId}`);
+        const container = document.getElementById('subjectCards');
+        if (!Array.isArray(raw) || raw.length === 0) {
+          container.innerHTML = `<div class="info-card">Không có môn nào.</div>`;
+          return;
+        }
+        const map = new Map();
+        raw.forEach(item => {
+          const id = item.id ?? item.subjectId ?? (item.subject && item.subject.id) ?? null;
+          const name = item.subjectName ?? item.name ?? (item.subject && item.subject.name) ?? 'Không tên';
+          const key = id != null ? String(id) : `name:${name}`;
+          if (!map.has(key)) map.set(key, { id, name });
+        });
+        const subs = Array.from(map.values());
+        container.innerHTML = subs.map(s => `
       <div class="subject-card" data-subjectid="${s.id}">
         <h6>
           <span><i class="bi bi-book-half"></i> ${escapeHtml(s.name)}</span>
-          <span style="font-size:12px;color:var(--muted)">ID: ${s.id ?? '-'}</span>
+          <span style="font-size:12px;color:#64748b">ID: ${s.id ?? '-'}</span>
         </h6>
-        <div class="subject-meta">Chọn lớp để xem sinh viên và điểm</div>
+        <div class="subject-meta">Chọn lớp để xem học sinh và điểm</div>
         <div class="subject-actions">
           <button class="btn small btn-load-classes" data-subjectid="${s.id}" data-subjectname="${escapeAttr(s.name)}">Xem lớp</button>
         </div>
         <div class="class-list" style="display:none;"></div>
-        <div class="students-area" style="margin-top:20px; display:none;"></div>
+        <div class="students-area" style="margin-top:12px; display:none;"></div>
       </div>
     `).join('');
 
-    // attach handler
-    container.querySelectorAll('.btn-load-classes').forEach(btn=>{
-      btn.addEventListener('click', async (ev)=>{
-        const subjId = btn.dataset.subjectid;
-        const card = btn.closest('.subject-card');
-        const classListEl = card.querySelector('.class-list');
-        const studentsArea = card.querySelector('.students-area');
-        
-        // Toggle visibility
-        const isVisible = classListEl.style.display === 'flex';
-        // Reset display for all other cards
-        container.querySelectorAll('.subject-card').forEach(c => {
-          if (c !== card) {
-            c.querySelector('.class-list').style.display = 'none';
-            c.querySelector('.students-area').style.display = 'none';
-          }
+        // attach handler
+        container.querySelectorAll('.btn-load-classes').forEach(btn => {
+          btn.addEventListener('click', async (ev) => {
+            const subjId = btn.dataset.subjectid;
+            const card = btn.closest('.subject-card');
+            const classListEl = card.querySelector('.class-list');
+            const studentsArea = card.querySelector('.students-area');
+
+            const isVisible = classListEl.style.display === 'flex';
+            container.querySelectorAll('.subject-card').forEach(c => {
+              if (c !== card) {
+                c.querySelector('.class-list').style.display = 'none';
+                c.querySelector('.students-area').style.display = 'none';
+              }
+            });
+
+            if (isVisible) {
+              classListEl.style.display = 'none';
+              studentsArea.style.display = 'none';
+              return;
+            }
+
+            classListEl.style.display = 'flex';
+            classListEl.innerHTML = '<div style="color:#64748b">Đang tải lớp...</div>';
+            studentsArea.style.display = 'none';
+
+            try {
+              const classes = await apiGet(`/teacher/classesOfSubjectAndTeacher/${subjId}/${teacherId}`);
+              if (!Array.isArray(classes) || classes.length === 0) { classListEl.innerHTML = `<div class="text-muted">Không có lớp cho môn này</div>`; return; }
+              classListEl.innerHTML = classes.map(c => {
+                const cstId = c.id ?? c.classSubjectTeacherId ?? c.cstId ?? '';
+                const classId = c.classId ?? (c.schoolClass && c.schoolClass.id) ?? '';
+                const className = c.className ?? (c.schoolClass && c.schoolClass.name) ?? `Lớp ${classId || cstId}`;
+                return `<button class="class-btn" data-subjectid="${subjId}" data-cstid="${cstId}" data-classid="${classId}" data-classname="${escapeAttr(className)}">${escapeHtml(className)}</button>`;
+              }).join('');
+              classListEl.querySelectorAll('.class-btn').forEach(cb => {
+                cb.addEventListener('click', async (e) => {
+                  classListEl.querySelectorAll('.class-btn').forEach(b => b.style.backgroundColor = '');
+                  e.currentTarget.style.backgroundColor = '#2563eb';
+                  e.currentTarget.style.color = 'white';
+
+                  const subjId = e.currentTarget.dataset.subjectid;
+                  const cstId = e.currentTarget.dataset.cstid;
+                  const classId = e.currentTarget.dataset.classid;
+                  const className = e.currentTarget.dataset.classname;
+                  await loadStudentsIntoCard(subjId, classId, cstId, className, card);
+                });
+              });
+            } catch (err) {
+              console.error('load classes', err);
+              classListEl.innerHTML = `<div class="text-muted">Lỗi tải lớp</div>`;
+            }
+          });
         });
 
-        if(isVisible){ 
-          classListEl.style.display='none'; 
-          studentsArea.style.display='none'; 
-          return; 
-        }
+      } catch (err) {
+        console.error('loadSubjects', err);
+        alert('Không tải được danh sách môn.');
+      }
+    }
 
-        classListEl.style.display = 'flex';
-        classListEl.innerHTML = '<div style="color:var(--muted)">Đang tải lớp...</div>';
-        studentsArea.style.display = 'none';
-        
-        try{
-          const classes = await apiGet(`/teacher/classesOfSubject/${subjId}`);
-          if(!Array.isArray(classes) || classes.length===0){ classListEl.innerHTML = `<div class="text-muted">Không có lớp cho môn này</div>`; return; }
-          classListEl.innerHTML = classes.map(c=>{
-            const cstId = c.id ?? c.classSubjectTeacherId ?? c.cstId ?? '';
-            const classId = c.classId ?? (c.schoolClass && c.schoolClass.id) ?? '';
-            const className = c.className ?? (c.schoolClass && c.schoolClass.name) ?? `Lớp ${classId || cstId}`;
-            return `<button class="class-btn" data-subjectid="${subjId}" data-cstid="${cstId}" data-classid="${classId}" data-classname="${escapeAttr(className)}">${escapeHtml(className)}</button>`;
-          }).join('');
-          // attach per-class handlers
-          classListEl.querySelectorAll('.class-btn').forEach(cb=>{
-            cb.addEventListener('click', async (e)=>{
-              // Highlight active class button
-              classListEl.querySelectorAll('.class-btn').forEach(b=>b.style.backgroundColor='var(--accent-light)');
-              e.currentTarget.style.backgroundColor = 'var(--accent)';
-              e.currentTarget.style.color = 'white';
-
-              const subjId = e.currentTarget.dataset.subjectid;
-              const cstId = e.currentTarget.dataset.cstid;
-              const classId = e.currentTarget.dataset.classid;
-              const className = e.currentTarget.dataset.classname;
-              await loadStudentsIntoCard(subjId, classId, cstId, className, card);
-            });
-          });
-        }catch(err){
-          console.error('load classes', err);
-          classListEl.innerHTML = `<div class="text-muted">Lỗi tải lớp</div>`;
+    // apiGetFile: gọi API và trả về Blob
+    async function apiGetFile(url) {
+      // nếu bạn dùng token (JWT) thì thêm header Authorization
+      const token = localStorage.getItem('token'); // hoặc lấy token từ đâu đó
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': token ? `Bearer ${token}` : ''
         }
       });
-    });
 
-  }catch(err){
-    console.error('loadSubjects', err);
-    alert('Không tải được danh sách môn.');
-  }
-}
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
 
-/* load students for chosen class only; merge grades from enrollments (if any) */
-async function loadStudentsIntoCard(subjectId, classId, cstId, className, cardElement){
-  const studentsArea = cardElement.querySelector('.students-area');
-  studentsArea.style.display='block';
-  studentsArea.innerHTML = `<div style="color:var(--muted);padding:10px;">Đang tải sinh viên...</div>`;
+      const blob = await res.blob();
+      return blob;
+    }
 
-  try{
-    let students = [];
-    // 1) Prefer studentsOfClass when classId present
-    if(classId){
-      try{
-        const studs = await apiGet(`/teacher/studentsOfClass/${classId}`);
-        if(Array.isArray(studs) && studs.length>0){
-          students = studs.map(s=>{
-            return {
-              studentId: s.id ?? s.studentId ?? '',
-              studentCode: s.studentCode ?? s.code ?? '',
-              fullName: s.fullName ?? s.name ?? '',
-              grade: s.grade ?? null
-            };
-          });
-        }
-      }catch(e){
-        console.warn('studentsOfClass failed, will try fallback to enrollments', e);
-        students = [];
+    // Hàm xuất file điểm theo cstId
+    async function exportGradesByCst(cstId) {
+      if (!cstId) {
+        return;
+      }
+
+      try {
+        const blob = await apiGetFile(`/teacher/export/cst/${encodeURIComponent(cstId)}`);
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `grades_${cstId}.xlsx`; // tên file tải về
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      } catch (e) {
+        console.error(e)
       }
     }
 
-    // 2) If no students from studentsOfClass (classId not provided or endpoint empty), fallback to enrollments and filter by cstId
-    if((!students || students.length===0)){
-      const enroll = await apiGet(`/teacher/subjects/${subjectId}/students`);
-      if(Array.isArray(enroll) && enroll.length>0){
-        // If cstId present, filter by cstId; otherwise keep all enrollments for subject
-        let filtered = enroll;
-        if(cstId){
-          filtered = enroll.filter(en => {
-            const enCst = en.cstId ?? en.classSubjectTeacherId ?? en.cst ?? null;
-            if(enCst) return String(enCst) === String(cstId);
-            // try classId inside enrollment if available
-            const eClassId = en.classId ?? en.schoolClassId ?? en.class?.id ?? en.schoolClass?.id ?? null;
-            if(classId && eClassId) return String(eClassId) === String(classId);
-            return false;
-          });
-        }
-        students = filtered.map(en=>{
-          const sid = en.studentId ?? en.student?.id ?? en.id ?? '';
-          const code = en.studentCode ?? en.student?.studentCode ?? en.student?.code ?? '';
-          const name = en.studentName ?? en.student?.fullName ?? en.student?.name ?? '';
-          const grade = (en.grade===0 || en.grade) ? en.grade : (en.point ?? en.score ?? null);
-          return { studentId: sid, studentCode: code, fullName: name, grade };
-        });
-      }
-    }
+    /* load students for chosen class only; merge grades from enrollments (if any) */
+    async function loadStudentsIntoCard(subjectId, classId, cstId, className, cardElement) {
+      const studentsArea = cardElement.querySelector('.students-area');
+      studentsArea.style.display = 'block';
+      studentsArea.innerHTML = `<div style="color:#64748b;padding:10px;">Đang tải học sinh...</div>`;
 
-    // 3) additionally: try to merge grades: call enrollments and create map by studentId + cstId
-    let enrollMap = new Map();
-    try{
-      const enrollAll = await apiGet(`/teacher/subjects/${subjectId}/students`);
-      if(Array.isArray(enrollAll)){
-        enrollAll.forEach(en => {
-          const sid = en.studentId ?? en.student?.id ?? en.id ?? null;
-          const enCst = en.cstId ?? en.classSubjectTeacherId ?? en.cst ?? null;
-          if(sid != null){
-            enrollMap.set(String(sid) + '::' + String(enCst ?? ''), {
-              grade: (en.grade===0 || en.grade) ? en.grade : (en.point ?? en.score ?? null),
-              cstId: enCst
-            });
-            // also map by sid only (if no cst match)
-            if(!enrollMap.has(String(sid) + '::')) enrollMap.set(String(sid) + '::', {
-              grade: (en.grade===0 || en.grade) ? en.grade : (en.point ?? en.score ?? null),
-              cstId: enCst
+      try {
+        let students = [];
+        if (classId) {
+          try {
+            const studs = await apiGet(`/teacher/studentsOfClass/${classId}`);
+            if (Array.isArray(studs) && studs.length > 0) {
+              students = studs.map(s => {
+                return {
+                  studentId: s.id ?? s.studentId ?? '',
+                  studentCode: s.studentCode ?? s.code ?? '',
+                  fullName: s.fullName ?? s.name ?? '',
+                  grade: s.grade ?? null
+                };
+              });
+            }
+          } catch (e) {
+            console.warn('studentsOfClass failed, will try fallback to enrollments', e);
+            students = [];
+          }
+        }
+
+        if ((!students || students.length === 0)) {
+          const enroll = await apiGet(`/teacher/subjects/${subjectId}/students`);
+          if (Array.isArray(enroll) && enroll.length > 0) {
+            let filtered = enroll;
+            if (cstId) {
+              filtered = enroll.filter(en => {
+                const enCst = en.cstId ?? en.classSubjectTeacherId ?? en.cst ?? null;
+                if (enCst) return String(enCst) === String(cstId);
+                const eClassId = en.classId ?? en.schoolClassId ?? en.class?.id ?? en.schoolClass?.id ?? null;
+                if (classId && eClassId) return String(eClassId) === String(classId);
+                return false;
+              });
+            }
+            students = filtered.map(en => {
+              const sid = en.studentId ?? en.student?.id ?? en.id ?? '';
+              const code = en.studentCode ?? en.student?.studentCode ?? en.student?.code ?? '';
+              const name = en.studentName ?? en.student?.fullName ?? en.student?.name ?? '';
+              const grade = (en.grade === 0 || en.grade) ? en.grade : (en.point ?? en.score ?? null);
+              return { studentId: sid, studentCode: code, fullName: name, grade };
             });
           }
+        }
+
+        let enrollMap = new Map();
+        try {
+          const enrollAll = await apiGet(`/teacher/subjects/${subjectId}/students`);
+          if (Array.isArray(enrollAll)) {
+            enrollAll.forEach(en => {
+              const sid = en.studentId ?? en.student?.id ?? en.id ?? null;
+              const enCst = en.cstId ?? en.classSubjectTeacherId ?? en.cst ?? null;
+              if (sid != null) {
+                enrollMap.set(String(sid) + '::' + String(enCst ?? ''), {
+                  grade: (en.grade === 0 || en.grade) ? en.grade : (en.point ?? en.score ?? null),
+                  cstId: enCst
+                });
+                if (!enrollMap.has(String(sid) + '::')) enrollMap.set(String(sid) + '::', {
+                  grade: (en.grade === 0 || en.grade) ? en.grade : (en.point ?? en.score ?? null),
+                  cstId: enCst
+                });
+              }
+            });
+          }
+        } catch (e) { }
+
+        students = (students || []).map(s => {
+          const sid = String(s.studentId ?? '');
+          let g = s.grade ?? '';
+          const keyExact = sid + '::' + String(cstId ?? '');
+          if (enrollMap.has(keyExact) && enrollMap.get(keyExact).grade !== null && enrollMap.get(keyExact).grade !== undefined) {
+            g = enrollMap.get(keyExact).grade;
+          } else if (enrollMap.has(sid + '::') && (g === '' || g === null || g === undefined)) {
+            g = enrollMap.get(sid + '::').grade;
+          }
+          return { ...s, grade: g };
         });
-      }
-    }catch(e){
-      // ignore if fails
-    }
 
-    // merge grades into students array
-    students = (students || []).map(s => {
-      const sid = String(s.studentId ?? '');
-      let g = s.grade ?? '';
-      // prefer exact cst match
-      const keyExact = sid + '::' + String(cstId ?? '');
-      if(enrollMap.has(keyExact) && enrollMap.get(keyExact).grade !== null && enrollMap.get(keyExact).grade !== undefined){
-        g = enrollMap.get(keyExact).grade;
-      } else if(enrollMap.has(sid + '::') && (g === '' || g === null || g === undefined)){
-        g = enrollMap.get(sid + '::').grade;
-      }
-      return {...s, grade: g};
-    });
+        if (!students || students.length === 0) {
+          studentsArea.innerHTML = `<div style="color:#64748b;padding:10px;">Không có học sinh trong lớp ${className}.</div>`;
+          return;
+        }
 
-    // render
-    if(!students || students.length===0){
-      studentsArea.innerHTML = `<div style="color:var(--muted);padding:10px;">Không có sinh viên trong lớp ${className}.</div>`;
-      return;
-    }
-
-    studentsArea.innerHTML = `
-      <h6 style="font-size:16px; margin-bottom:10px; color:var(--text); border-bottom:1px solid #ebf1f5; padding-bottom:5px;">Sinh viên lớp: ${escapeHtml(className)}</h6>
-      <table class="students-table">
-        <thead><tr><th style="width:15%">Mã SV</th><th>Tên</th><th style="width:15%">Điểm</th><th style="width:18%">Hành động</th></tr></thead>
+        studentsArea.innerHTML = `
+      <h6 style="font-size:16px; margin-bottom:10px; color:#1e293b; border-bottom:1px solid #ebf1f5; padding-bottom:5px;">Học sinh lớp: ${escapeHtml(className)}</h6>
+      <table class="students-table" style="width:100%;border-collapse:collapse;margin-top:10px;">
+        <thead><tr><th style="width:15%;padding:10px 8px;text-align:left;">Mã HS</th><th style="padding:10px 8px;text-align:left;">Tên</th><th style="width:15%;padding:10px 8px;text-align:left;">Điểm</th><th style="width:18%;padding:10px 8px;text-align:left;">Hành động</th></tr></thead>
         <tbody>
           ${students.map(st => `
             <tr data-studentid="${escapeHtml(st.studentId)}" data-cstid="${escapeHtml(cstId)}">
-              <td>${escapeHtml(st.studentCode)}</td>
-              <td>${escapeHtml(st.fullName)}</td>
-              <td><input id="grade-${escapeHtml(st.studentId)}" type="number" step="0.1" min="0" max="10" value="${(st.grade !== null && st.grade !== undefined && st.grade !== '') ? st.grade : ''}"></td>
-              <td><button class="btn small" data-studentid="${escapeAttr(st.studentId)}" data-cstid="${escapeAttr(cstId)}" onclick="saveGradeInline(this)">Lưu</button></td>
-            </tr>
+              <td style="padding:10px 8px;">${escapeHtml(st.studentCode)}</td>
+              <td style="padding:10px 8px;">${escapeHtml(st.fullName)}</td>
+              <td style="padding:10px 8px;"><input id="grade-${escapeHtml(st.studentId)}" type="number" step="0.1" min="0" max="10" value="${(st.grade !== null && st.grade !== undefined && st.grade !== '') ? st.grade : ''}" style="width:80px;padding:6px;border-radius:6px;border:1px solid #d9e8ff;text-align:center;"></td>
+              <td style="padding:10px 8px;"><button class="btn small" data-studentid="${escapeAttr(st.studentId)}" data-cstid="${escapeAttr(cstId)}" onclick="saveGradeInline(this)" style="padding:8px 12px;background:#2563eb;color:#fff;border:none;border-radius:6px;cursor:pointer;">Lưu</button></td>
           `).join('')}
         </tbody>
       </table>
+            <div style="margin-top:15px;">
+        <button class="btn" style="padding:8px 12px;background:#16a34a;color:#fff;border:none;border-radius:6px;cursor:pointer;"
+                onclick="exportGradesByCst('${cstId}')">
+          Xuất danh sách điểm
+        </button>
+      </div>
     `;
+      } catch (err) {
+        console.error('loadStudentsIntoCard', err);
+        studentsArea.innerHTML = `<div style="color:#64748b;padding:10px;">Lỗi tải học sinh.</div>`;
+      }
+    }
 
-  }catch(err){
-    console.error('loadStudentsIntoCard', err);
-    studentsArea.innerHTML = `<div style="color:var(--muted);padding:10px;">Lỗi tải sinh viên.</div>`;
-  }
-}
+    /* inline save grade */
+    async function saveGradeInline(btn) {
+      const tr = btn.closest('tr');
+      const studentId = btn.dataset.studentid ?? tr.dataset.studentid;
+      const cstId = btn.dataset.cstid ?? tr.dataset.cstId;
+      if (!studentId) return alert('Không biết studentId');
+      if (!cstId) return alert('Thiếu cstId để lưu điểm (vui lòng kiểm tra endpoint backend).');
+      const input = document.getElementById(`grade-${studentId}`);
+      if (!input) return alert('Không tìm thấy ô điểm');
+      const val = input.value;
+      if (val === '') return alert('Vui lòng nhập điểm');
+      const num = Number(val);
+      if (Number.isNaN(num) || num < 0 || num > 10) return alert('Điểm phải từ 0 đến 10');
 
-/* inline save grade */
-async function saveGradeInline(btn){
-  const tr = btn.closest('tr');
-  const studentId = btn.dataset.studentid ?? tr.dataset.studentid;
-  const cstId = btn.dataset.cstid ?? tr.dataset.cstId;
-  if(!studentId) return alert('Không biết studentId');
-  if(!cstId) return alert('Thiếu cstId để lưu điểm (vui lòng kiểm tra endpoint backend).');
-  const input = document.getElementById(`grade-${studentId}`);
-  if(!input) return alert('Không tìm thấy ô điểm');
-  const val = input.value;
-  if(val === '') return alert('Vui lòng nhập điểm');
-  const num = Number(val);
-  if(Number.isNaN(num) || num < 0 || num > 10) return alert('Điểm phải từ 0 đến 10');
-  
-  btn.textContent = 'Đang lưu...';
-  btn.disabled = true;
+      btn.textContent = 'Đang lưu...';
+      btn.disabled = true;
 
-  try{
-    // API endpoint: PUT /teacher/subjects/{cstId}/students/{studentId}/{grade}
-    await apiPut(`/teacher/subjects/${cstId}/students/${studentId}/${num}`);
-    alert('Cập nhật điểm thành công');
-  }catch(err){
-    console.error('saveGradeInline', err);
-    alert('Lỗi khi lưu điểm. Xem console.');
-  }finally{
-    btn.textContent = 'Lưu';
-    btn.disabled = false;
-  }
-}
+      try {
+        // API endpoint: PUT /teacher/subjects/{cstId}/students/{studentId}/{grade}
+        await apiPut(`/teacher/subjects/${cstId}/students/${studentId}/${num}`);
+        alert('Cập nhật điểm thành công');
+      } catch (err) {
+        console.error('saveGradeInline', err);
+        alert('Lỗi khi lưu điểm. Xem console.');
+      } finally {
+        btn.textContent = 'Lưu';
+        btn.disabled = false;
+      }
+    }
 
-/* SCHEDULE */
-async function loadSchedule(){
-  try{
-    const list = await apiGet(`/teacher/teachers/${teacherId}/schedules`);
-    const days = [
-      { name: "Thứ 2", code: 2 },
-      { name: "Thứ 3", code: 3 },
-      { name: "Thứ 4", code: 4 },
-      { name: "Thứ 5", code: 5 },
-      { name: "Thứ 6", code: 6 },
-      { name: "Thứ 7", code: 7 }
-    ];
-    const container = document.getElementById('scheduleGrid');
-    container.innerHTML = days.map(day=>{
-      const subjects = (Array.isArray(list) ? list : []).filter(s => Number(s.dayOfWeek) === day.code);
-      // Sort subjects by period (assuming period is a number)
-      subjects.sort((a, b) => (a.period ?? 0) - (b.period ?? 0));
-      
-      return `<div class="day-column"><h6>${day.name}</h6>` +
-        (subjects.length ? subjects.map(s=>`
+    /* SCHEDULE */
+    async function loadSchedule() {
+      try {
+        const list = await apiGet(`/teacher/teachers/${teacherId}/schedules`);
+        const days = [
+          { name: "Thứ 2", code: 2 },
+          { name: "Thứ 3", code: 3 },
+          { name: "Thứ 4", code: 4 },
+          { name: "Thứ 5", code: 5 },
+          { name: "Thứ 6", code: 6 },
+          { name: "Thứ 7", code: 7 },
+          { name: "Chủ nhật", code: 1 }
+        ];
+        const container = document.getElementById('scheduleGrid');
+        container.innerHTML = days.map(day => {
+          const subjects = (Array.isArray(list) ? list : []).filter(s => Number(s.dayOfWeek) === day.code);
+          subjects.sort((a, b) => (a.period ?? 0) - (b.period ?? 0));
+
+          return `<div class="day-column"><h6>${day.name}</h6>` +
+            (subjects.length ? subjects.map(s => `
           <div class="class-item">
             <strong>${escapeHtml(s.subjectName ?? s.subject?.name ?? '')}</strong>
-            <div class="text-muted">Lớp: ${escapeHtml(s.className ?? s.class?.name ?? '')}</div>
-            <div class="text-muted">Tiết: ${escapeHtml(String(s.period ?? ''))}</div>
-          </div>`).join('') : `<p class="text-muted" style="text-align:center;margin-top:12px;font-size:14px;">Không có tiết</p>`)
-        + `</div>`;
-    }).join('');
-  }catch(err){
-    console.error('loadSchedule', err);
-    document.getElementById('scheduleGrid').innerHTML = `<div class="info-card" style="grid-column: 1 / -1; color:var(--muted)">Lỗi tải thời khóa biểu.</div>`;
-  }
-}
+            <div style="color:#64748b;font-size:14px">Lớp: ${escapeHtml(s.className ?? s.class?.name ?? '')}</div>
+            <div style="color:#64748b;font-size:14px">Tiết: ${escapeHtml(String(s.period ?? ''))}</div>
+          </div>`).join('') : `<p style="color:#64748b;text-align:center;margin-top:12px;font-size:14px;">Không có tiết</p>`)
+            + `</div>`;
+        }).join('');
+      } catch (err) {
+        console.error('loadSchedule', err);
+        document.getElementById('scheduleGrid').innerHTML = `<div style="grid-column: 1 / -1; color:#64748b">Lỗi tải thời khóa biểu.</div>`;
+      }
+    }
 
-/* CHANGE PASSWORD */
-async function changePassword(){
-  const oldPass = document.getElementById('oldPassword').value.trim();
-  const newPass = document.getElementById('newPassword').value.trim();
-  const confirmPass = document.getElementById('confirmPassword').value.trim();
-  if(newPass !== confirmPass) return alert('Mật khẩu xác nhận không khớp!');
-  if(!oldPass || !newPass) return alert('Vui lòng nhập đầy đủ!');
-  if(newPass.length < 6) return alert('Mật khẩu mới phải có ít nhất 6 ký tự.');
-  
-  const btn = document.querySelector('#passwordSection .btn');
-  btn.textContent = 'Đang xử lý...';
-  btn.disabled = true;
-  
-  try{
-    await apiPost('/teacher/change-password', { oldPassword: oldPass, newPassword: newPass, userId: teacherId });
-    alert('Đổi mật khẩu thành công! Vui lòng sử dụng mật khẩu mới cho lần đăng nhập sau.');
-    document.getElementById('oldPassword').value='';
-    document.getElementById('newPassword').value='';
-    document.getElementById('confirmPassword').value='';
-  }catch(err){
-    console.error('changePassword', err);
-    alert('Lỗi đổi mật khẩu. Có thể mật khẩu cũ không đúng. Xem console để biết chi tiết.');
-  }finally{
-    btn.textContent = 'Xác nhận';
-    btn.disabled = false;
-  }
-}
+    /* CHANGE PASSWORD */
+    async function changePassword() {
+      const oldPass = document.getElementById('oldPassword').value.trim();
+      const newPass = document.getElementById('newPassword').value.trim();
+      const confirmPass = document.getElementById('confirmPassword').value.trim();
+      if (newPass !== confirmPass) return alert('Mật khẩu xác nhận không khớp!');
+      if (!oldPass || !newPass) return alert('Vui lòng nhập đầy đủ!');
+      if (newPass.length < 6) return alert('Mật khẩu mới phải có ít nhất 6 ký tự.');
 
-/* UI helpers */
-function toggleSection(id, event){
-  document.querySelectorAll('.content-card').forEach(sec => sec.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.sidebar a').forEach(a=>a.classList.remove('active'));
-  if(event && event.target){
-    const a = event.target.closest('a');
-    if(a) a.classList.add('active');
-  }
-}
-function escapeHtml(str){
-  if(str === null || str === undefined) return '';
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-}
-function escapeAttr(s){ return String(s ?? '').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-function decodeAttr(s){ return String(s||'').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&amp;/g,'&'); }
-</script>
+      const btn = document.querySelector('#passwordSection button');
+      btn && (btn.textContent = 'Đang xử lý...');
+      btn && (btn.disabled = true);
+
+      try {
+        await apiPost('/teacher/change-password', { oldPassword: oldPass, newPassword: newPass, userId: teacherId });
+        alert('Đổi mật khẩu thành công! Vui lòng sử dụng mật khẩu mới cho lần đăng nhập sau.');
+        document.getElementById('oldPassword').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+      } catch (err) {
+        console.error('changePassword', err);
+        alert('Lỗi đổi mật khẩu. Có thể mật khẩu cũ không đúng. Xem console để biết chi tiết.');
+      } finally {
+        btn && (btn.textContent = 'Xác nhận');
+        btn && (btn.disabled = false);
+      }
+    }
+
+    /* UI helpers */
+    function toggleSection(id, event) {
+      ['profileSection', 'enrollmentSection', 'scheduleSection', 'passwordSection'].forEach(sid => {
+        const el = document.getElementById(sid);
+        if (el) el.style.display = 'none';
+      });
+      const show = document.getElementById(id);
+      if (show) show.style.display = 'block';
+
+      document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+      const target = event?.target?.closest ? event.target.closest('a') : null;
+      if (target) target.classList.add('active');
+    }
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+    function escapeAttr(s) { return String(s ?? '').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+  </script>
 </body>
+
 </html>

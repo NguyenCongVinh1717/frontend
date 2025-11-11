@@ -276,12 +276,13 @@
   <div class="wrapper">
     <aside>
       <h2>BẢNG ĐIỀU KHIỂN</h2>
-      <a href="admins.html"><i class="fa fa-home"></i>  Trang chủ</a>
-      <a href="students.html" class="active"><i class="fa fa-user-graduate"></i>  Quản lý học sinh</a>
-      <a href="teachers.html"><i class="fa fa-chalkboard-teacher"></i>  Quản lý giáo viên</a>
-      <a href="subjects.html"><i class="fa fa-book"></i>  Quản lý môn học</a>
-      <a href="assignments.html"><i class="fa fa-link"></i> Gán môn - giáo viên</a>
+      <a href="admins.html"><i class="fa fa-home"></i>Trang chủ</a>
+      <a href="students.html" class="active"><i class="fa fa-user-graduate"></i>Quản lý học sinh</a>
+      <a href="teachers.html"><i class="fa fa-chalkboard-teacher"></i>Quản lý giáo viên</a>
+      <a href="subjects.html"><i class="fa fa-book"></i>Quản lý môn học</a>
+      <a href="assignments.html"><i class="fa fa-link"></i>Gán môn - giáo viên</a>
       <a href="schedules.html"><i class="fa fa-calendar"></i>Thời khóa biểu</a>
+      <a href="dangnhap.html"><i class="fa-solid fa-right-from-bracket"></i>Đăng xuất</a>
     </aside>
     <main>
       <h2>Quản lý học sinh</h2>
@@ -466,7 +467,7 @@
     }
 
     async function deleteStudent(id) {
-      if (!confirm('Xóa sinh viên này?')) return;
+      if (!confirm('Xóa học sinh này?')) return;
       try {
         await apiDelete('/admin/students/' + id);
         showMsg('Đã xóa!');
@@ -513,7 +514,7 @@
         </td>
       </tr>`;
         });
-        showMsg(`Đã lọc ${data.length} sinh viên`);
+        showMsg(`Đã lọc ${data.length} học sinh`);
       } catch (e) { showMsg(e.message, 'error'); }
     }
 
@@ -543,7 +544,7 @@
         </td>
       </tr>`;
         });
-        showMsg(`Tìm thấy ${data.length} sinh viên`);
+        showMsg(`Tìm thấy ${data.length} học sinh`);
       } catch (e) { showMsg(e.message, 'error'); }
     }
 
@@ -568,32 +569,80 @@
       }
     }
 
+    // === NHẬP FILE CSV / EXCEL ===
+async function importStudents() {
+    const fileInput = document.getElementById('importFile');
+    const file = fileInput.files[0];
 
-    // === NHẬP FILE CSV ===
+    if (!file) return showMsg('Vui lòng chọn file!', 'error');
+
+    // đọc file CSV và convert sang JSON
+    const text = await file.text();
+    const lines = text.split('\n').filter(l => l.trim() !== '');
+    const headers = lines[0].split(',');
+    const dtos = lines.slice(1).map(line => {
+        const cols = line.split(',');
+        return {
+            studentCode: cols[0],
+            fullName: cols[1],
+            dob: cols[2],
+            gender: cols[3],
+            email: cols[4],
+            phone: cols[5],
+            classId: parseInt(cols[6])
+        };
+    });
+
+    try {
+        await apiPost('/admin/import/students', dtos); // gửi JSON
+        showMsg('Nhập file thành công!');
+        loadStudents();
+        loadStudentSelect();
+    } catch (e) {
+        showMsg('Lỗi khi nhập file: ' + e.message, 'error');
+    }
+}
+
 
     // === XUẤT FILE EXCEL ===
+    // Hàm tải file với JWT
+    async function apiGetFile(path) {
+      const token = localStorage.getItem('token');
+      const headers = token ? { 'Authorization': 'Bearer ' + token } : {};
+      const res = await fetch("http://localhost:8080/api" + path, { method: 'GET', headers });
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error('Không thể tải file: ' + text);
+      }
+
+      return await res.blob(); // Lấy file dạng blob
+    }
+
+    // Hàm xuất danh sách học sinh
     async function exportStudents() {
       try {
-        const res = await fetch(apiBase + '/students/export', { method: 'GET' });
-        if (!res.ok) throw new Error('Không thể tải file');
-        const blob = await res.blob();
+        const blob = await apiGetFile('/admin/students/export');
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'Students.xlsx';
+        a.download = 'Students.xlsx'; // Tên file khi tải
+        document.body.appendChild(a);
         a.click();
+        a.remove();
         window.URL.revokeObjectURL(url);
-        showMsg('Đã xuất danh sách sinh viên!');
+        showMsg('Đã xuất danh sách học sinh!');
       } catch (e) {
-        showMsg('Lỗi khi xuất file: ' + e.message, 'error');
+        showMsg(e.message, 'error');
       }
     }
+
 
     // 🔹 Khi chọn sinh viên, chỉ hiển thị môn của lớp sinh viên đó
     async function selectStudentForEnroll(studentId, fullName, classId) {
       const studentSelect = document.getElementById('studentSelect');
       studentSelect.value = studentId;
-      showMsg(`Đã chọn sinh viên: ${fullName}`);
+      showMsg(`Đã chọn học sinh: ${fullName}`);
 
       try {
         const data = await apiGet(`/admin/classes/${classId}/csts`);
@@ -640,7 +689,7 @@
       const studentId = document.getElementById('studentSelect').value;
       const cstId = document.getElementById('cstSelect').value;
       if (!studentId || !cstId) {
-        showMsg('Vui lòng chọn sinh viên và môn học!', 'error');
+        showMsg('Vui lòng chọn học sinh và môn học!', 'error');
         return;
       }
 
@@ -657,7 +706,7 @@
       const studentId = document.getElementById('studentSelect').value;
       const cstId = document.getElementById('cstSelect').value;
       if (!studentId || !cstId) {
-        showMsg('Vui lòng chọn sinh viên và môn học!', 'error');
+        showMsg('Vui lòng chọn học sinh và môn học!', 'error');
         return;
       }
 

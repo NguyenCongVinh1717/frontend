@@ -161,6 +161,16 @@
       background: #162c6a;
     }
 
+    .btn.success {
+      background: #10b981;
+      color: #fff;
+    }
+
+    .btn.warning {
+      background: #f59e0b;
+      color: #fff;
+    }
+
     /* ====================== TABLE ====================== */
     .table-wrap {
       overflow-x: auto;
@@ -262,6 +272,7 @@
       <a href="subjects.html"><i class="fa fa-book"></i> Quản lý môn học</a>
       <a href="assignments.html"><i class="fa fa-link"></i> Gán môn - giáo viên</a>
       <a href="schedules.html"><i class="fa fa-calendar"></i> Thời khóa biểu</a>
+      <a href="dangnhap.html"><i class="fa-solid fa-right-from-bracket"></i>Đăng xuất</a>
     </aside>
 
     <!-- MAIN (uses same kinds of elements as students.html — no col classes) -->
@@ -292,6 +303,17 @@
           <button class="btn primary" onclick="filterByTeacherName()"><i class="fa fa-search"></i> Tìm</button>
           <button class="btn primary" onclick="loadTeachers()"><i class="fa fa-rotate"></i> Tải lại</button>
         </div>
+
+        <!-- import/export -->
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:12px;">
+          <label style="font-weight:600;">Nhập / Xuất file CSV:</label>
+          <input type="file" id="importFile" accept=".csv"
+            style="padding:6px; border-radius:6px; border:1px solid #d1d5db;">
+          <button class="btn success" onclick="importTeachers()"><i class="fa fa-file-import"></i> Nhập file</button>
+          <button class="btn warning" onclick="exportTeachers()"><i class="fa fa-file-export"></i> Xuất file</button>
+        </div>
+
+
 
         <!-- TABLE -->
         <div class="table-wrap">
@@ -401,6 +423,72 @@
         showMsg('Đã xóa!');
         loadTeachers();
       } catch (e) { showMsg(e.message || 'Lỗi khi xóa', 'error'); }
+    }
+
+    // === NHẬP FILE CSV / EXCEL ===
+    async function importTeachers() {
+      const fileInput = document.getElementById('importFile');
+      const file = fileInput.files[0];
+
+      if (!file) return showMsg('Vui lòng chọn file!', 'error');
+
+      // đọc file CSV và convert sang JSON
+      const text = await file.text();
+      const lines = text.split('\n').filter(l => l.trim() !== '');
+      const headers = lines[0].split(',');
+      const dtos = lines.slice(1).map(line => {
+        const cols = line.split(',');
+        return {
+          teacherCode: cols[0],
+          fullName: cols[1],
+          dob: cols[2],
+          gender: cols[3],
+          email: cols[4],
+          phone: cols[5],
+        };
+      });
+
+      try {
+        await apiPost('/admin/import/teachers', dtos); // gửi JSON
+        showMsg('Nhập file thành công!');
+        loadTeachers();
+      } catch (e) {
+        showMsg('Lỗi khi nhập file: ' + e.message, 'error');
+      }
+    }
+
+
+    // === XUẤT FILE EXCEL ===
+    // Hàm tải file với JWT
+    async function apiGetFile(path) {
+      const token = localStorage.getItem('token');
+      const headers = token ? { 'Authorization': 'Bearer ' + token } : {};
+      const res = await fetch("http://localhost:8080/api" + path, { method: 'GET', headers });
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error('Không thể tải file: ' + text);
+      }
+
+      return await res.blob(); // Lấy file dạng blob
+    }
+
+    // Hàm xuất danh sách giáo viên
+    async function exportTeachers() {
+      try {
+        const blob = await apiGetFile('/admin/teachers/export');
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Teachers.xlsx'; // Tên file khi tải
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+        showMsg('Đã xuất danh sách giáo viên!');
+      } catch (e) {
+        showMsg(e.message, 'error');
+      }
     }
 
     async function filterByTeacherName() {
