@@ -470,20 +470,48 @@ async function loadEnrollments() {
       } catch (e) { console.error(e); }
     }
 
-    async function changePassword() {
-      const oldPass = document.getElementById('oldPassword').value.trim();
-      const newPass = document.getElementById('newPassword').value.trim();
-      const confirmPass = document.getElementById('confirmPassword').value.trim();
-      if (newPass !== confirmPass) return alert('Mật khẩu xác nhận không khớp!');
-      if (!oldPass || !newPass) return alert('Vui lòng nhập đầy đủ!');
-      try {
-        await apiPost('/student/change-password', { oldPassword: oldPass, newPassword: newPass });
-        alert('Đổi mật khẩu thành công!');
-        document.getElementById('oldPassword').value = '';
-        document.getElementById('newPassword').value = '';
-        document.getElementById('confirmPassword').value = '';
-      } catch (e) { alert('Lỗi: ' + e.message); }
+async function changePassword() {
+  const oldPass = document.getElementById('oldPassword').value.trim();
+  const newPass = document.getElementById('newPassword').value.trim();
+  const confirmPass = document.getElementById('confirmPassword').value.trim();
+
+  if (!oldPass || !newPass || !confirmPass)
+    return alert('Vui lòng nhập đầy đủ!');
+
+  if (newPass.length < 6)
+    return alert('Mật khẩu mới phải có ít nhất 6 ký tự.');
+
+  if (newPass !== confirmPass)
+    return alert('Mật khẩu xác nhận không khớp!');
+
+  const btn = document.querySelector('#passwordSection button');
+  if (btn) {
+    btn.textContent = 'Đang xử lý...';
+    btn.disabled = true;
+  }
+
+  try {
+    await apiPost('/student/change-password', {
+      oldPassword: oldPass,
+      newPassword: newPass,
+      confirmPassword: confirmPass
+    });
+
+    alert('Đổi mật khẩu thành công! Vui lòng đăng nhập lại với mật khẩu mới.');
+    document.getElementById('oldPassword').value = '';
+    document.getElementById('newPassword').value = '';
+    document.getElementById('confirmPassword').value = '';
+
+  } catch (err) {
+    console.error('changePassword', err);
+    alert(err?.message || 'Đổi mật khẩu thất bại. Kiểm tra mật khẩu cũ.');
+  } finally {
+    if (btn) {
+      btn.textContent = 'Xác nhận';
+      btn.disabled = false;
     }
+  }
+}
 
     function toggleSection(id, event) {
       ['profileSection', 'enrollmentSection', 'scheduleSection', 'passwordSection'].forEach(sid => {
