@@ -288,7 +288,6 @@
       <h2>Quản lý học sinh</h2>
 
       <div class="content-box">
-        <!-- giữ nguyên JS và nội dung gốc -->
         <!-- FORM -->
         <form id="studentForm">
           <input type="hidden" id="studentId">
@@ -348,7 +347,7 @@
           </table>
         </div>
 
-        <!-- ENROLL / UNENROLL (giữ nguyên HTML như yêu cầu) -->
+        <!-- ENROLL / UNENROLL -->
         <div class="enroll-box">
           <h3 style="color:#1e3a8a; text-align:center; margin:0 0 6px 0;">Gán / Hủy gán môn học cho học sinh</h3>
           <div class="row">
@@ -375,7 +374,7 @@
   <!-- message box -->
   <div id="msgBox"></div>
 
-  <!-- ========== JS (NGUYÊN VẸN như bạn yêu cầu) ========== -->
+  <!-- ========== JS========== -->
   <script src="api.js"></script>
   <script>
     const apiBase = "http://localhost:8080/api/admin";
@@ -476,7 +475,7 @@
       } catch (e) { showMsg(e.message, 'error'); }
     }
 
-    // === LỌC SINH VIÊN THEO LỚP ===
+    // === LỌC THEO LỚP ===
     async function loadFilterClasses() {
       try {
         const data = await apiGet('/admin/classes');
@@ -638,7 +637,7 @@ async function importStudents() {
     }
 
 
-    // 🔹 Khi chọn sinh viên, chỉ hiển thị môn của lớp sinh viên đó
+    // Khi chọn hs, chỉ hiển thị môn của lớp hs đó
     async function selectStudentForEnroll(studentId, fullName, classId) {
       const studentSelect = document.getElementById('studentSelect');
       studentSelect.value = studentId;

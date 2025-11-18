@@ -233,13 +233,13 @@
 </head>
 
 <body>
-  <!-- HEADER (exact same structure/CSS as students.html) -->
+  <!-- HEADER -->
   <header>
     <img src="anh/Thiết kế chưa có tên.png" alt="Logo hệ thống">
     <h1>HỆ THỐNG QUẢN LÝ HỌC SINH VÀ GIÁO VIÊN TRƯỜNG TIỂU HỌC CHU MINH</h1>
   </header>
 
-  <!-- SIDEBAR + CONTENT (sidebar HTML identical to students.html) -->
+  <!-- SIDEBAR + CONTENT -->
   <div class="wrapper">
     <aside>
       <h2>BẢNG ĐIỀU KHIỂN</h2>
@@ -252,12 +252,12 @@
       <a href="dangnhap.html"><i class="fa-solid fa-right-from-bracket"></i>Đăng xuất</a>
     </aside>
 
-    <!-- MAIN (uses the same simple form layout as students.html — no col-* classes) -->
+    <!-- MAIN -->
     <main>
       <h2>Quản lý môn học</h2>
 
       <div class="content-box">
-        <!-- FORM: same style/structure as students.html (auto-fit grid) -->
+        <!-- FORM -->
         <form id="subjectForm">
           <input type="hidden" id="subjectId">
           <input id="code" placeholder="Mã môn" required>
@@ -269,7 +269,7 @@
           <button type="submit" class="btn primary"><i class="fa fa-save"></i> Lưu môn học</button>
         </form>
 
-        <!-- Controls: search/filter like students.html -->
+        <!-- Controls-->
         <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:8px;">
           <input type="text" id="searchName" placeholder="Nhập tên môn..."
             style="padding:8px; border-radius:6px; border:1px solid #d1d5db; min-width:200px;">
@@ -313,18 +313,18 @@
     </main>
   </div>
 
-  <!-- message box (same as students.html) -->
+  <!-- message box -->
   <div id="msgBox"></div>
 
-  <!-- FOOTER (identical to students.html) -->
+  <!-- FOOTER -->
   <footer class="site-footer">
     © 2025 Hệ thống quản lý học sinh và giáo viên - Nhóm 3
   </footer>
 
-  <!-- giữ nguyên api.js -->
+  <!--api.js -->
   <script src="api.js"></script>
 
-  <!-- JS: giữ chức năng như file subjects trước đó, nhưng selector/layout matches form above -->
+  <!-- JS -->
   <script>
     const apiBase = "http://localhost:8080/api/admin";
 

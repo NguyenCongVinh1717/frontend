@@ -315,7 +315,7 @@
             <div id="enrollmentCards"></div>
           </section>
 
-          <!-- SCHEDULE - enlarged -->
+          <!-- SCHEDULE -->
           <section id="scheduleSection" class="content-box" style="display:none;">
             <h2>Thời khóa biểu</h2>
             <div class="schedule-grid" id="scheduleGrid"></div>
@@ -357,20 +357,7 @@
         classId = p.classId;
       } catch (e) { alert('Không tải được thông tin sinh viên: ' + e.message); }
     }
-
-    // async function loadEnrollments() {
-    //   try {
-    //     const list = await apiGet(`/student/${studentId}/enrollments`);
-    //     const container = document.getElementById('enrollmentCards');
-    //     container.innerHTML = list.map(e => `
-    //       <div class="enroll-card">
-    //         <h6><i class="bi bi-book"></i> ${e.subjectName}</h6>
-    //         <p><span>Giáo viên:</span> <span>${e.teacherName}</span></p>
-    //         <p><span>Điểm:</span> <span>${e.grade ?? '-'}</span></p>
-    //       </div>
-    //     `).join('');
-    //   } catch (e) { console.error(e); }
-    // }
+    
 async function loadEnrollments() {
   try {
     const list = await apiGet(`/student/${studentId}/enrollments`);

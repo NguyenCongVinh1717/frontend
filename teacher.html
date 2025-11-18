@@ -7,7 +7,6 @@
   <title>Trang Giáo viên</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <style>
-    /* --- CSS dựa trên student.html layout để đồng nhất --- */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -337,7 +336,7 @@
     <div class="main-wrap">
       <div class="content-area">
         <div>
-          <!-- PROFILE (same id as student.html) -->
+          <!-- PROFILE -->
           <section id="profileSection" class="content-box">
             <h2>Thông tin cá nhân</h2>
             <ul class="profile-list">
@@ -347,7 +346,7 @@
             </ul>
           </section>
 
-          <!-- ENROLLMENT SECTION (reused id from student.html) - contains subjectCards for teacher JS -->
+          <!-- ENROLLMENT SECTION - contains subjectCards for teacher JS -->
           <section id="enrollmentSection" class="content-box" style="display:none;">
             <h2>Môn giảng dạy</h2>
             <!-- teacher JS expects #subjectCards, so keep it -->
@@ -361,7 +360,7 @@
           </section>
         </div>
       </div>
-      <!-- RIGHT column: same layout as student.html (password box on the right) -->
+      <!-- RIGHT column -->
       <section id="passwordSection" class="content-box" style="display:none;">
         <h2>Đổi mật khẩu</h2>
         <input type="password" id="oldPassword" placeholder="Mật khẩu cũ">
@@ -374,10 +373,9 @@
 
   <footer>© 2025 Hệ thống quản lý học sinh và giáo viên - Nhóm 3</footer>
 
-  <!-- Giữ nguyên toàn bộ JS bạn cung cấp (api.js được gọi) -->
+  <!-- JS-->
   <script src="api.js"></script>
   <script>
-    /* Giữ nguyên apiGet/apiPut/apiPost từ api.js */
     const teacherId = localStorage.getItem('teacherId');
 
     window.onload = async function () {
@@ -401,7 +399,7 @@
       }
     }
 
-    /* SUBJECTS: dedupe và hiển thị các lớp */
+    /* SUBJECTS*/
     async function loadSubjects() {
       try {
         const raw = await apiGet(`/teacher/subjectsOfTeacher/${teacherId}`);
@@ -701,7 +699,6 @@
       btn.disabled = true;
 
       try {
-        // API endpoint: PUT /teacher/subjects/{cstId}/students/{studentId}/{grade}
         await apiPut(`/teacher/subjects/${cstId}/students/${studentId}/${num}`);
         alert('Cập nhật điểm thành công');
       } catch (err) {

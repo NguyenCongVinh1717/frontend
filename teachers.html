@@ -121,7 +121,7 @@
       border: 1px solid #e3eaf2;
     }
 
-    /* ====================== FORMS (same style as students.html) ====================== */
+    /* ====================== FORMS ====================== */
     form {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -256,14 +256,14 @@
 </head>
 
 <body>
-  <!-- HEADER (identical to students.html) -->
+  <!-- HEADER -->
   <header>
     <img src="anh/Thiết kế chưa có tên.png" alt="Logo hệ thống">
     <h1>HỆ THỐNG QUẢN LÝ HỌC SINH VÀ GIÁO VIÊN TRƯỜNG TIỂU HỌC CHU MINH</h1>
   </header>
 
   <div class="wrapper">
-    <!-- SIDEBAR (identical to students.html) -->
+    <!-- SIDEBAR -->
     <aside>
       <h2>BẢNG ĐIỀU KHIỂN</h2>
       <a href="admins.html"><i class="fa fa-home"></i> Trang chủ</a>
@@ -275,12 +275,12 @@
       <a href="dangnhap.html"><i class="fa-solid fa-right-from-bracket"></i>Đăng xuất</a>
     </aside>
 
-    <!-- MAIN (uses same kinds of elements as students.html — no col classes) -->
+    <!-- MAIN -->
     <main>
       <h2>Quản lý giáo viên</h2>
 
       <div class="content-box">
-        <!-- FORM: same simple grid as students.html -->
+        <!-- FORM -->
         <form id="teacherForm">
           <input type="hidden" id="teacherId">
           <input id="teacherCode" placeholder="Mã giáo viên" required>
@@ -296,7 +296,7 @@
           <button type="submit" class="btn primary"><i class="fa fa-save"></i> Lưu giáo viên</button>
         </form>
 
-        <!-- Controls: search and reload (same style as students.html) -->
+        <!-- Controls -->
         <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:8px;">
           <input id="filterTeacherName" type="text" placeholder="Nhập tên giáo viên..."
             style="padding:8px; border-radius:6px; border:1px solid #d1d5db; min-width:200px;">
@@ -341,10 +341,9 @@
 
   <footer>© 2025 Hệ thống quản lý học sinh và giáo viên - Nhóm 3</footer>
 
-  <!-- giữ nguyên api.js -->
   <script src="api.js"></script>
 
-  <!-- JS logic (giữ nguyên endpoints / chức năng như file trước) -->
+  <!-- JS -->
   <script>
     function showMsg(msg, type = 'success') {
       const box = document.getElementById('msgBox');
