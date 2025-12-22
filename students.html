@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Quản lý Sinh viên | Admin Portal</title>
+  <title>Quản lý học sinh</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -181,6 +181,8 @@
       overflow-x: auto;
       border-radius: 8px;
       margin-top: 10px;
+      max-height: 350px;
+      overflow-y: auto;
     }
 
     table {
@@ -262,6 +264,42 @@
     #msgBox.error {
       background: #dc2626;
     }
+
+    .custom-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      overflow: auto;
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 800px;
+      border-radius: 8px;
+    }
+
+    .close-btn {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    
+    .close-btn:hover
+    {
+      color: #000;
+      text-decoration: none;
+    }
+
   </style>
 </head>
 
@@ -310,6 +348,12 @@
             style="padding:8px; border-radius:6px; border:1px solid #d1d5db; min-width:200px;">
           <button class="btn primary" onclick="searchStudentsByName()"><i class="fa fa-search"></i> Tìm theo
             tên</button>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:8px;">
+          <input type="text" id="searchCode" placeholder="Nhập mã học sinh..."
+            style="padding:8px; border-radius:6px; border:1px solid #d1d5db; min-width:200px;">
+          <button class="btn primary" onclick="searchStudentsByCode()"><i class="fa fa-search"></i> Tìm theo
+            mã</button>
         </div>
 
         <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:8px;">
@@ -373,6 +417,29 @@
 
   <!-- message box -->
   <div id="msgBox"></div>
+  <div id="enrollmentsModal" class="custom-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close-btn" onclick="closeEnrollmentsModal()">&times;</span>
+        <h3 style="margin: 0;">Danh sách môn học của <span id="studentNameInModal"></span></h3>
+      </div>
+
+      <div class="modal-body">
+        <div id="enrollmentCards" style="
+                display: flex; 
+                flex-wrap: wrap; 
+                gap: 15px; 
+                justify-content: flex-start; 
+                padding: 10px 0;
+            ">
+        </div>
+      </div>
+
+      <div class="modal-footer" style="padding-top: 15px; border-top: 1px solid #eee; text-align: right;">
+        <button type="button" class="btn btn-secondary" onclick="closeEnrollmentsModal()">Đóng</button>
+      </div>
+    </div>
+  </div>
 
   <!-- ========== JS========== -->
   <script src="api.js"></script>
@@ -385,6 +452,29 @@
       box.className = type === 'error' ? 'error' : '';
       box.style.display = 'block';
       setTimeout(() => box.style.display = 'none', 3000);
+    }
+    // Hàm hiển thị Popup
+    function openEnrollmentsModal() {
+      const modal = document.getElementById('enrollmentsModal');
+      modal.style.display = 'block';
+    }
+
+    // Hàm đóng Popup
+    function closeEnrollmentsModal() {
+      const modal = document.getElementById('enrollmentsModal');
+      modal.style.display = 'none';
+
+      // Dọn dẹp nội dung khi đóng
+      document.getElementById('enrollmentCards').innerHTML = '';
+      document.getElementById('studentNameInModal').textContent = '';
+    }
+
+    // Đóng Popup khi click ra ngoài
+    window.onclick = function (event) {
+      const modal = document.getElementById('enrollmentsModal');
+      if (event.target === modal) {
+        closeEnrollmentsModal();
+      }
     }
 
     async function loadClasses() {
@@ -416,9 +506,11 @@
         <td>
           <button class="btn edit-btn" onclick="editStudent(${s.id})"><i class="fa fa-pen"></i></button>
           <button class="btn delete-btn" onclick="deleteStudent(${s.id})"><i class="fa fa-trash"></i></button>
-            <button class="btn" style="background:#2563eb; color:white;" onclick="selectStudentForEnroll(${s.id}, '${s.fullName}', ${s.classId})">
+          <button class="btn" style="background:#2563eb; color:white;" onclick="selectStudentForEnroll(${s.id}, '${s.fullName}', ${s.classId})">
     <i class="fa fa-book"></i>
   </button>
+          <button class="btn" onclick="loadAndDisplayEnrollments(${s.id}, '${s.fullName}')">
+             <i class="fa fa-eye"></i> </button>
         </td>
       </tr>`;
         });
@@ -475,6 +567,89 @@
       } catch (e) { showMsg(e.message, 'error'); }
     }
 
+    async function loadAndDisplayEnrollments(studentId, studentName) {
+      // 1. Chuẩn bị Modal
+      document.getElementById('enrollmentCards').innerHTML = 'Đang tải...';
+      document.getElementById('studentNameInModal').textContent = studentName;
+      openEnrollmentsModal(); // Mở Popup
+
+      try {
+        const list = await apiGet(`/admin/${studentId}/enrollments`);
+        const container = document.getElementById('enrollmentCards');
+
+        // 2. Hiển thị danh sách môn học (Các thẻ điểm)
+        const enrollmentCardsHtml = list.map(e => `
+            <div class="enroll-card" style="
+              min-width: 230px;
+              max-width:230px;
+              background-color:#e9f1fb;
+              height:130px;
+              padding: 15px;
+              border-radius: 8px;
+            ">
+              <h3><i class="bi bi-book"></i> ${e.subjectName}</h3>
+              <p style="margin-bottom: 5px;"><span>Giáo viên:</span> <span>${e.teacherName}</span></p>
+              <p style="margin-bottom: 0;"><span>Điểm:</span> <span>${e.grade ?? '-'}</span></p>
+            </div>
+        `).join('');
+
+        // 3. Lọc, tính toán điểm trung bình và xếp loại
+        const gradedSubjects = list.filter(e => e.grade !== null && !isNaN(parseFloat(e.grade)));
+
+        const numGraded = gradedSubjects.length;
+        const avgGrade = numGraded > 0
+          ? (gradedSubjects.reduce((sum, e) => sum + parseFloat(e.grade), 0) / numGraded).toFixed(2)
+          : '-';
+
+        let rank = '-';
+        if (avgGrade !== '-') {
+          const avg = parseFloat(avgGrade);
+          if (avg < 4) rank = 'Yếu';
+          else if (avg < 6) rank = 'Trung bình';
+          else if (avg < 8) rank = 'Khá';
+          else if (avg < 9) rank = 'Giỏi';
+          else rank = 'Xuất sắc';
+        }
+
+        // 4. Thêm phần thống kê
+        const summaryHtml = numGraded > 0
+          ? `
+                <div style="
+                    padding:15px;
+                    background:#f8fafc;
+                    border:1px solid #e2e8f0;
+                    border-radius:8px;
+                    font-size:15px;
+                    color:#1e293b;
+                    line-height:1.6;
+                    min-width:230px;
+                    height:130px;
+                ">
+                    <strong><i class="bi bi-bar-chart-fill" style="color:#3b82f6"></i> Thống kê điểm:</strong><br>
+                    <span style="color:#475569"> Số môn đã có điểm:</span> ${numGraded}<br>
+                    <span style="color:#475569"> Điểm trung bình:</span> ${avgGrade}<br>
+                    <span style="color:#475569"> Xếp loại:</span> <strong>${rank}</strong>
+                </div>
+            `
+          : `<div style="
+                margin-top:12px;
+                color:#888;
+                padding: 15px;
+                border: 1px dashed #ccc;
+                border-radius: 8px;
+                width: 500px;
+                text-align: center;
+              ">Chưa có môn nào có điểm.</div>`;
+
+        // 5. Cập nhật nội dung container
+        container.innerHTML = summaryHtml + enrollmentCardsHtml;
+
+      } catch (e) {
+        console.error(e);
+        document.getElementById('enrollmentCards').innerHTML = `<div style="color:red; text-align:center;">Lỗi: Không thể tải danh sách môn học.</div>`;
+      }
+    }
+
     // === LỌC THEO LỚP ===
     async function loadFilterClasses() {
       try {
@@ -510,6 +685,8 @@
             <button class="btn" style="background:#2563eb; color:white;" onclick="selectStudentForEnroll(${s.id}, '${s.fullName}', ${s.classId})">
     <i class="fa fa-book"></i>
   </button>
+            <button class="btn" onclick="loadAndDisplayEnrollments(${s.id}, '${s.fullName}')">
+             <i class="fa fa-eye"></i> </button>
         </td>
       </tr>`;
         });
@@ -540,6 +717,40 @@
             <button class="btn" style="background:#2563eb; color:white;" onclick="selectStudentForEnroll(${s.id}, '${s.fullName}', ${s.classId})">
     <i class="fa fa-book"></i>
   </button>
+            <button class="btn" onclick="loadAndDisplayEnrollments(${s.id}, '${s.fullName}')">
+             <i class="fa fa-eye"></i> </button>
+        </td>
+      </tr>`;
+        });
+        showMsg(`Tìm thấy ${data.length} học sinh`);
+      } catch (e) { showMsg(e.message, 'error'); }
+    }
+
+        async function searchStudentsByCode() {
+      const code = document.getElementById('searchCode').value.trim();
+      if (!code) { loadStudents(); return; }
+      try {
+        const data = await apiGet('/admin/studentsWithCode/' + encodeURIComponent(code));
+        const tbody = document.querySelector('#studentsTable tbody');
+        tbody.innerHTML = '';
+        data.forEach(s => {
+          tbody.innerHTML += `
+      <tr>
+        <td>${s.studentCode}</td>
+        <td>${s.fullName}</td>
+        <td>${s.dob || ''}</td>
+        <td>${s.gender || ''}</td>
+        <td>${s.email || ''}</td>
+        <td>${s.phone || ''}</td>
+        <td>${s.className || ''}</td>
+        <td>
+          <button class="btn edit-btn" onclick="editStudent(${s.id})"><i class="fa fa-pen"></i></button>
+          <button class="btn delete-btn" onclick="deleteStudent(${s.id})"><i class="fa fa-trash"></i></button>
+            <button class="btn" style="background:#2563eb; color:white;" onclick="selectStudentForEnroll(${s.id}, '${s.fullName}', ${s.classId})">
+    <i class="fa fa-book"></i>
+  </button>
+            <button class="btn" onclick="loadAndDisplayEnrollments(${s.id}, '${s.fullName}')">
+             <i class="fa fa-eye"></i> </button>
         </td>
       </tr>`;
         });
@@ -548,59 +759,57 @@
     }
 
 
-    async function loadClasses() {
-      try {
-        const data = await apiGet('/admin/classes'); // [{id, name}]
-        const sel = document.getElementById('classSelect');
-        sel.innerHTML = '<option value="">Chọn lớp</option>';
-        data.forEach(c => sel.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+    // async function loadClasses() {
+    //   try {
+    //     const data = await apiGet('/admin/classes'); // [{id, name}]
+    //     const sel = document.getElementById('classSelect');
+    //     sel.innerHTML = '<option value="">Chọn lớp</option>';
+    //     data.forEach(c => sel.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+    //     window.classMap = {};
+    //     data.forEach(c => window.classMap[c.name] = c.id);
 
-        // Lưu map className -> id để import CSV
-        window.classMap = {};
-        data.forEach(c => window.classMap[c.name] = c.id);
-
-        // Filter select
-        const filter = document.getElementById('filterClass');
-        filter.innerHTML = '<option value="">-- Tất cả --</option>';
-        data.forEach(c => filter.innerHTML += `<option value="${c.id}">${c.name}</option>`);
-      } catch (e) {
-        showMsg(e.message, 'error');
-      }
-    }
+    //     // Filter select
+    //     const filter = document.getElementById('filterClass');
+    //     filter.innerHTML = '<option value="">-- Tất cả --</option>';
+    //     data.forEach(c => filter.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+    //   } catch (e) {
+    //     showMsg(e.message, 'error');
+    //   }
+    // }
 
     // === NHẬP FILE CSV / EXCEL ===
-async function importStudents() {
-    const fileInput = document.getElementById('importFile');
-    const file = fileInput.files[0];
+    async function importStudents() {
+      const fileInput = document.getElementById('importFile');
+      const file = fileInput.files[0];
 
-    if (!file) return showMsg('Vui lòng chọn file!', 'error');
+      if (!file) return showMsg('Vui lòng chọn file!', 'error');
 
-    // đọc file CSV và convert sang JSON
-    const text = await file.text();
-    const lines = text.split('\n').filter(l => l.trim() !== '');
-    const headers = lines[0].split(',');
-    const dtos = lines.slice(1).map(line => {
+      // đọc file CSV và convert sang JSON
+      const text = await file.text();
+      const lines = text.split('\n').filter(l => l.trim() !== '');
+      const headers = lines[0].split(',');
+      const dtos = lines.slice(1).map(line => {
         const cols = line.split(',');
         return {
-            studentCode: cols[0],
-            fullName: cols[1],
-            dob: cols[2],
-            gender: cols[3],
-            email: cols[4],
-            phone: cols[5],
-            classId: parseInt(cols[6])
+          studentCode: cols[0],
+          fullName: cols[1],
+          dob: cols[2],
+          gender: cols[3],
+          email: cols[4],
+          phone: cols[5],
+          classId: parseInt(cols[6])
         };
-    });
+      });
 
-    try {
+      try {
         await apiPost('/admin/import/students', dtos); // gửi JSON
         showMsg('Nhập file thành công!');
         loadStudents();
         loadStudentSelect();
-    } catch (e) {
+      } catch (e) {
         showMsg('Lỗi khi nhập file: ' + e.message, 'error');
+      }
     }
-}
 
 
     // === XUẤT FILE EXCEL ===
@@ -718,7 +927,6 @@ async function importStudents() {
         showMsg(e.message, 'error');
       }
     }
-
 
 
     window.onload = () => {

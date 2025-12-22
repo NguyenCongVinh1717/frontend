@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Gán Môn học - Giáo viên cho Lớp | Admin Portal</title>
+  <title>Gán Môn học - Giáo viên cho Lớp</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -157,6 +157,8 @@
       overflow-x: auto;
       border-radius: 8px;
       margin-top: 10px;
+      max-height: 350px;
+      overflow-y: auto;
     }
 
     table {
@@ -229,10 +231,10 @@
   <div class="wrapper">
     <aside>
       <h2>BẢNG ĐIỀU KHIỂN</h2>
-      <a href="admins.html"><i class="fa fa-home"></i>  Trang chủ</a>
-      <a href="students.html"><i class="fa fa-user-graduate"></i>  Quản lý học sinh</a>
-      <a href="teachers.html"><i class="fa fa-chalkboard-teacher"></i>  Quản lý giáo viên</a>
-      <a href="subjects.html"><i class="fa fa-book"></i>  Quản lý môn học</a>
+      <a href="admins.html"><i class="fa fa-home"></i> Trang chủ</a>
+      <a href="students.html"><i class="fa fa-user-graduate"></i> Quản lý học sinh</a>
+      <a href="teachers.html"><i class="fa fa-chalkboard-teacher"></i> Quản lý giáo viên</a>
+      <a href="subjects.html"><i class="fa fa-book"></i> Quản lý môn học</a>
       <a href="assignments.html" class="active"><i class="fa fa-link"></i> Gán môn - giáo viên</a>
       <a href="schedules.html"><i class="fa fa-calendar"></i>Thời khóa biểu</a>
       <a href="dangnhap.html"><i class="fa-solid fa-right-from-bracket"></i>Đăng xuất</a>
@@ -331,7 +333,7 @@
         teachers.forEach(t => {
           const opt = document.createElement('option');
           opt.value = t.id;
-          opt.textContent = t.fullName;
+          opt.textContent = `${t.teacherCode} - ${t.fullName}`;
           teacherSel.appendChild(opt);
         });
 
